@@ -58,7 +58,7 @@
   <!-- Compile the source  and test source -->
   <target name="compile" depends="init">
 	<echo>path.source: ${path.source}</echo>
-    <javac source="1.6" debug="${debug}" encoding="UTF-8" classpathref="classpath.build" destdir="${dir.classes}" includes="com/test/instrument/**">
+    <javac source="1.6" debug="true" encoding="UTF-8" classpathref="classpath.build" destdir="${dir.classes}" includes="com/test/instrument/**">
       <classpath>
       </classpath>
 
