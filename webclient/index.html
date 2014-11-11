@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+		<title>Call Tree</title>
+		<script type="text/javascript" src="js/util.js"></script>
+		<script type="text/javascript" src="js/amd/requirejs/require.js"></script>
+		<script type="text/javascript" src="js/main.js"></script>
+		
+		<style>
+			.hide{
+				
+			}
+			dialog > div{
+				margin:20px;
+			}
+		</style>
+	</head>
+	
+	<script>
+		require.config({ 
+				baseUrl: "./", 
+				paths: { 
+					"md": "js"
+				}, 
+				waitSeconds: 2
+			 }); 
+		
+		require(["md/ajax","md/Tree","md/Event","md/Dialog"],function(ajax,Tree,event,Dialog){
+			ajax.openURL("/catalyst/ca/jsoncalltree",function(h){
+				var t = h.responseText;
+				var obj = JSON.parse(t);
+				var d = new Dialog("caseDialog");
+				d.setData(obj);
+				d.open();
+			},function(){
+				console.log("fail to load jsoncalltree");
+			},{},"GET",null,true);
+		});
+	</script>
+	<body>
+		<div id="container" class="container" onselectstart="return false">
+			
+		</div>
+		<dialog id="filterDialog" class="hide">
+			<h3 tabIndex="1">过滤条件：</h3>
+			<div>
+				<span>调用次数 > </span><input id="times" type="number" value="5"/> 
+			</div>
+			<div>
+				<span>And/Or</span><input id="and" name="andor" type="radio" checked value="and"/> <input id="or" name="andor" type="radio" value="or"/> 
+			</div>
+			<div>
+				<span>平均耗时 > </span><input id="cost" type="number" step="10" value="250"/><span>ms</span> 
+			</div>
+			<div>
+				<button id="filterBtn">过滤</button>
+				<button id="clostBtn">关闭</button>
+				<button id="resetBtn">清除</button>
+			</div>
+		</dialog>
+		<dialog id="caseDialog" class="hide">
+			<h3>选择要查看的REST入口：</h3>
+		</dialog>
+	</body>
+</html>

@@ -41,3 +41,12 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+#java class
+.class
+
+*.class
+*.classpath
+*.project
+target/agent.jar
+target/*

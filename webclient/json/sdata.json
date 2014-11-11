@@ -1,0 +1,24 @@
+[{
+		"callMeanCost" : "200",
+		"nextcall" : [{
+				"callMeanCost" : "200",
+				"nextcall" : [{
+						"callMeanCost" : "200",
+						"method" : "say",
+						"callCosts" : ["200"],
+						"callTimes" : "1",
+						"class" : "com.spss.test.Dog"
+					}
+				],
+				"method" : "say",
+				"callCosts" : ["200"],
+				"callTimes" : "1",
+				"class" : "com.spss.test.Person"
+			}
+		],
+		"method" : "say",
+		"callCosts" : ["200"],
+		"callTimes" : "1",
+		"class" : "com.spss.test.Dog"
+	}
+]

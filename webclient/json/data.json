@@ -1,0 +1,1622 @@
+[{
+		"callMeanCost" : "984",
+		"nextcall" : [{
+				"callMeanCost" : "969",
+				"nextcall" : [{
+						"callMeanCost" : "844",
+						"nextcall" : [{
+								"callMeanCost" : "79",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"method" : "getProjectService",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.agent.AEAgent"
+									}, {
+										"callMeanCost" : "48",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "fromString",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.project.Principal$PrincipalType"
+											}
+										],
+										"method" : "getParticipants",
+										"callCosts" : ["48"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.proxy.ProjectProxy2"
+									}, {
+										"callMeanCost" : "31",
+										"method" : "getViewers",
+										"callCosts" : ["31"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.proxy.ProjectProxy2"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getId",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setParticipants",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}
+								],
+								"method" : "fillProjectExtends",
+								"callCosts" : ["79"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.service.dao.ProjectDAO"
+							}, {
+								"callMeanCost" : "640",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"method" : "getProjectService",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.AEAgent"
+									}, {
+										"callMeanCost" : "78",
+										"method" : "getProjectById",
+										"callCosts" : ["78"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.proxy.ProjectProxy2"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "valueOf",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project$ProjectState"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getDsId",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getId",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getName",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getState",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getVersion",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setCreatedDate",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setCurrentUserRole",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setDateModified",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setDsId",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setDsName",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setIsDsAvailable",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setModifiedBy",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setName",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setState",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setVersion",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getVersion",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.user.UserProjectVersion"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "trace",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.log.Logger"
+									}, {
+										"callMeanCost" : "16",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "get",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgentFactory"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "make",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgentFactory"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "instance",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.IndicatorCache"
+													}
+												],
+												"method" : "newDAO",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.DataSourceDAO"
+											}
+										],
+										"method" : "getDataSourceDao",
+										"callCosts" : ["16"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.DaoFactory"
+									}, {
+										"callMeanCost" : "156",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "get",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgentFactory"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "make",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgentFactory"
+											}, {
+												"callMeanCost" : "156",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}, {
+														"callMeanCost" : "15",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "getLogger",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.log.LoggerFactory"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "makeInstance",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.session.UserProjectVersionCache"
+															}
+														],
+														"method" : "instance",
+														"callCosts" : ["15"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.UserProjectVersionCache"
+													}
+												],
+												"method" : "newDAO",
+												"callCosts" : ["156"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+											}
+										],
+										"method" : "getProjectVersionDao",
+										"callCosts" : ["156"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.DaoFactory"
+									}, {
+										"callMeanCost" : "31",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "get",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgentFactory"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "make",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgentFactory"
+											}, {
+												"callMeanCost" : "31",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}
+												],
+												"method" : "newDAO",
+												"callCosts" : ["31"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.UserDAO"
+											}
+										],
+										"method" : "getUserDao",
+										"callCosts" : ["31"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.DaoFactory"
+									}, {
+										"callMeanCost" : "140",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "getDataSourceService",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgent"
+											}, {
+												"callMeanCost" : "140",
+												"method" : "getDatasourceIDs",
+												"callCosts" : ["140"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.proxy.DataSourceProxy"
+											}
+										],
+										"method" : "getDatasourceIDs",
+										"callCosts" : ["140"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.DataSourceDAO"
+									}, {
+										"callMeanCost" : "172",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "getFileService",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgent"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "getUser",
+												"callCosts" : ["0", "0", "0", "0"],
+												"callTimes" : "4",
+												"class" : "com.spss.ca.agent.AEAgent"
+											}, {
+												"callMeanCost" : "46",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "readStreamAsString",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.agent.proxy.FileProxy"
+													}
+												],
+												"method" : "getFileContentAsString",
+												"callCosts" : ["46"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.proxy.FileProxy"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "getProjectId",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.user.UserProjectVersion"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "setUser",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.user.UserProjectVersion"
+											}, {
+												"callMeanCost" : "32",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getProjectService",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.agent.AEAgent"
+													}, {
+														"callMeanCost" : "32",
+														"method" : "getProjectMetaDataPath",
+														"callCosts" : ["32"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.agent.proxy.ProjectProxy2"
+													}
+												],
+												"method" : "getProjectMetaDataPath",
+												"callCosts" : ["32"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectDAO"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "instance",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.AnalyticOutputCache"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "instance",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.IndicatorCache"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "instance",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.OutputMetaCache"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "instance",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.ProjectCache"
+													}
+												],
+												"method" : "newDAO",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectDAO"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getVersion",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.data.user.UserProjectVersion"
+													}, {
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "noteAccess",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																	}
+																],
+																"method" : "get",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+															}, {
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "noteAccess",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																	}, {
+																		"callMeanCost" : "0",
+																		"method" : "trimSizeTo",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																	}
+																],
+																"method" : "put",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "getUser",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.user.UserProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "get",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.session.UserProjectVersionCache"
+															}
+														],
+														"method" : "putUserVersion",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.UserProjectVersionCache"
+													}
+												],
+												"method" : "addUserProjectVersion",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "contains",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+															}, {
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"nextcall" : [{
+																				"callMeanCost" : "0",
+																				"method" : "debug",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.log.Logger"
+																			}, {
+																				"callMeanCost" : "0",
+																				"method" : "access$0",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.session.UserProjectVersionCache"
+																			}
+																		],
+																		"method" : "make",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.session.UserProjectVersionCache$1"
+																	}
+																],
+																"method" : "get",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.session.UserProjectVersionCache"
+															}
+														],
+														"method" : "contains",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.UserProjectVersionCache"
+													}
+												],
+												"method" : "getUserProjectVersion",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+											}, {
+												"callMeanCost" : "78",
+												"nextcall" : [{
+														"callMeanCost" : "16",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "newInstance",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.util.ReflectUtil"
+															}, {
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "getSetMethodsOfClass",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.util.ReflectUtil"
+																	}, {
+																		"callMeanCost" : "0",
+																		"method" : "invokeMethod",
+																		"callCosts" : ["0", "0", "0"],
+																		"callTimes" : "3",
+																		"class" : "com.spss.ca.util.ReflectUtil"
+																	}, {
+																		"callMeanCost" : "0",
+																		"method" : "toMethodMap",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.util.ReflectUtil"
+																	}, {
+																		"callMeanCost" : "0",
+																		"nextcall" : [{
+																				"callMeanCost" : "0",
+																				"method" : "props",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.util.jsonalization.annotation.Persistence"
+																			}
+																		],
+																		"method" : "getPersistenceProperties",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.util.jsonalization.PersistenceUtility"
+																	}, {
+																		"callMeanCost" : "0",
+																		"method" : "read",
+																		"callCosts" : ["0", "0", "0"],
+																		"callTimes" : "3",
+																		"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+																	}, {
+																		"callMeanCost" : "0",
+																		"nextcall" : [{
+																				"callMeanCost" : "0",
+																				"nextcall" : [{
+																						"callMeanCost" : "0",
+																						"nextcall" : [{
+																								"callMeanCost" : "0",
+																								"method" : "isEnum",
+																								"callCosts" : ["0", "0", "0"],
+																								"callTimes" : "3",
+																								"class" : "com.spss.ca.util.ReflectUtil"
+																							}
+																						],
+																						"method" : "matchType",
+																						"callCosts" : ["0", "0", "0", "0", "0", "0"],
+																						"callTimes" : "6",
+																						"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+																					}, {
+																						"callMeanCost" : "0",
+																						"method" : "makeTypeList",
+																						"callCosts" : ["0", "0", "0"],
+																						"callTimes" : "3",
+																						"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+																					}
+																				],
+																				"method" : "makeTypeFromDeclareClass",
+																				"callCosts" : ["0", "0", "0"],
+																				"callTimes" : "3",
+																				"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+																			}
+																		],
+																		"method" : "makeTypeFromDeclareClass",
+																		"callCosts" : ["0", "0", "0"],
+																		"callTimes" : "3",
+																		"class" : "com.spss.ca.util.jsonalization.type.ObjectType"
+																	}
+																],
+																"method" : "mixinProperties",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.util.jsonalization.type.ObjectType"
+															}
+														],
+														"method" : "read",
+														"callCosts" : ["16"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+													}, {
+														"callMeanCost" : "62",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"nextcall" : [{
+																				"callMeanCost" : "0",
+																				"method" : "getLogger",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.log.LoggerFactory"
+																			}
+																		],
+																		"method" : "isEnum",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.util.ReflectUtil"
+																	}
+																],
+																"method" : "matchType",
+																"callCosts" : ["0", "0", "0", "0", "0", "0"],
+																"callTimes" : "6",
+																"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+															}, {
+																"callMeanCost" : "62",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "getLogger",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.log.LoggerFactory"
+																	}
+																],
+																"method" : "makeTypeList",
+																"callCosts" : ["62"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+															}
+														],
+														"method" : "makeTypeFromDeclareClass",
+														"callCosts" : ["62"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+													}
+												],
+												"method" : "readJsonArray",
+												"callCosts" : ["78"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.util.jsonalization.JsonReader"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "make",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+													}
+												],
+												"method" : "make",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+											}
+										],
+										"method" : "getUserProjectVersion",
+										"callCosts" : ["172"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+									}, {
+										"callMeanCost" : "47",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "getUser",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgent"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "getUserService",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.AEAgent"
+											}, {
+												"callMeanCost" : "47",
+												"method" : "getUserRole",
+												"callCosts" : ["47"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.agent.proxy.UserProxy"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "getName",
+												"callCosts" : ["0", "0"],
+												"callTimes" : "2",
+												"class" : "com.spss.ca.data.user.UserRoleInfo"
+											}
+										],
+										"method" : "getUserProjectRole",
+										"callCosts" : ["47"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.UserDAO"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getStatus",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.meta.JobManager"
+									}, {
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "contains",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "debug",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.log.Logger"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "access$0",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.session.ProjectCache"
+															}
+														],
+														"method" : "make",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.ProjectCache$1"
+													}
+												],
+												"method" : "get",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.ProjectCache"
+											}
+										],
+										"method" : "exists",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.session.ProjectCache"
+									}, {
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "noteAccess",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "trimSizeTo",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+													}
+												],
+												"method" : "put",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "getId",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.project.Project"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "get",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.ProjectCache"
+											}
+										],
+										"method" : "put",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.session.ProjectCache"
+									}
+								],
+								"method" : "getProjectBasics",
+								"callCosts" : ["640"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.service.dao.ProjectDAO"
+							}, {
+								"callMeanCost" : "125",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"method" : "getUser",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.AEAgent"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getId",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getIsNew",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setIsEditing",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "setVersion",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.Project"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getIsLocked",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.ProjectVersion"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getVersion",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.project.ProjectVersion"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getResourceId",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getResourceVersion",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "isVersioned",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+									}, {
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "resourceIsBeingEdited",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ResourceIdentifierDAO"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "get",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.agent.AEAgentFactory"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "make",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.agent.AEAgentFactory"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "newDAO",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.service.dao.ResourceIdentifierDAO"
+															}
+														],
+														"method" : "getResourceIdentifierDao",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.service.dao.DaoFactory"
+													}
+												],
+												"method" : "getResourceIdentifierDA0",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.impl.UserServiceImpl"
+											}
+										],
+										"method" : "resourceIsBeingEdited",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.UserService"
+									}, {
+										"callMeanCost" : "109",
+										"nextcall" : [{
+												"callMeanCost" : "109",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getProjectService",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.agent.AEAgent"
+													}, {
+														"callMeanCost" : "78",
+														"nextcall" : [{
+																"callMeanCost" : "7",
+																"method" : "toJObject",
+																"callCosts" : ["15", "0"],
+																"callTimes" : "2",
+																"class" : "com.spss.json.JsonDeflater$JArrayView"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "next",
+																"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+																"callTimes" : "15",
+																"class" : "com.spss.json.JsonDeflater$JObjectView$1$1"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "access$000",
+																"callCosts" : ["0", "0"],
+																"callTimes" : "2",
+																"class" : "com.spss.json.JsonDeflater$JObjectView"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "toString",
+																"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+																"callTimes" : "15",
+																"class" : "com.spss.json.JsonDeflater$JObjectView"
+															}
+														],
+														"method" : "getVersions",
+														"callCosts" : ["78"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.agent.proxy.ProjectProxy2"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "getIsLocked",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.data.project.ProjectVersion"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "getVersion",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.data.project.ProjectVersion"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "setIsActive",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.data.project.ProjectVersion"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "getResourceVersion",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "isVersioned",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "debug",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.Logger"
+													}, {
+														"callMeanCost" : "31",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "setCommitTime",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setCommitUser",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setCreateTimeAsDate",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setCreateUser",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setDescription",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setIsEligibleForDelete",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setIsLocked",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setVersion",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.project.ProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "debug",
+																"callCosts" : ["0", "0"],
+																"callTimes" : "2",
+																"class" : "com.spss.ca.log.Logger"
+															}
+														],
+														"method" : "getProjectVersion",
+														"callCosts" : ["31"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+													}, {
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "isProject",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "setResourceVersion",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+															}, {
+																"callMeanCost" : "0",
+																"method" : "getVersion",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.data.user.UserProjectVersion"
+															}, {
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "getUser",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.agent.AEAgent"
+																	}, {
+																		"callMeanCost" : "0",
+																		"nextcall" : [{
+																				"callMeanCost" : "0",
+																				"nextcall" : [{
+																						"callMeanCost" : "0",
+																						"method" : "contains",
+																						"callCosts" : ["0"],
+																						"callTimes" : "1",
+																						"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																					}, {
+																						"callMeanCost" : "0",
+																						"method" : "get",
+																						"callCosts" : ["0"],
+																						"callTimes" : "1",
+																						"class" : "com.spss.ca.session.UserProjectVersionCache"
+																					}
+																				],
+																				"method" : "contains",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.session.UserProjectVersionCache"
+																			}, {
+																				"callMeanCost" : "0",
+																				"nextcall" : [{
+																						"callMeanCost" : "0",
+																						"nextcall" : [{
+																								"callMeanCost" : "0",
+																								"method" : "noteAccess",
+																								"callCosts" : ["0"],
+																								"callTimes" : "1",
+																								"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																							}
+																						],
+																						"method" : "get",
+																						"callCosts" : ["0"],
+																						"callTimes" : "1",
+																						"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																					}, {
+																						"callMeanCost" : "0",
+																						"method" : "get",
+																						"callCosts" : ["0"],
+																						"callTimes" : "1",
+																						"class" : "com.spss.ca.session.UserProjectVersionCache"
+																					}
+																				],
+																				"method" : "get",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.session.UserProjectVersionCache"
+																			}
+																		],
+																		"method" : "getUserProjectVersion",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+																	}
+																],
+																"method" : "getUserProjectVersion",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+															}, {
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "instance",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.session.UserProjectVersionCache"
+																	}
+																],
+																"method" : "newDAO",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+															}
+														],
+														"method" : "getById",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.service.dao.ResourceIdentifierDAO"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "newDAO",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.service.dao.ResourceIdentifierDAO"
+													}
+												],
+												"method" : "getProjectVersions",
+												"callCosts" : ["109"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+											}
+										],
+										"method" : "getProjectVersions",
+										"callCosts" : ["109"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+									}, {
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "instance",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.UserProjectVersionCache"
+											}
+										],
+										"method" : "newDAO",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+									}, {
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "isProject",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "setResourceVersion",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.resource.ResourceIdentifier"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "getVersion",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.data.user.UserProjectVersion"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getUser",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.agent.AEAgent"
+													}, {
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"method" : "contains",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																	}, {
+																		"callMeanCost" : "0",
+																		"method" : "get",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.session.UserProjectVersionCache"
+																	}
+																],
+																"method" : "contains",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.session.UserProjectVersionCache"
+															}, {
+																"callMeanCost" : "0",
+																"nextcall" : [{
+																		"callMeanCost" : "0",
+																		"nextcall" : [{
+																				"callMeanCost" : "0",
+																				"method" : "noteAccess",
+																				"callCosts" : ["0"],
+																				"callTimes" : "1",
+																				"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																			}
+																		],
+																		"method" : "get",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.cache.impl.MemoryLRUCache"
+																	}, {
+																		"callMeanCost" : "0",
+																		"method" : "get",
+																		"callCosts" : ["0"],
+																		"callTimes" : "1",
+																		"class" : "com.spss.ca.session.UserProjectVersionCache"
+																	}
+																],
+																"method" : "get",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.session.UserProjectVersionCache"
+															}
+														],
+														"method" : "getUserProjectVersion",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+													}
+												],
+												"method" : "getUserProjectVersion",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+											}, {
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "instance",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.UserProjectVersionCache"
+													}
+												],
+												"method" : "newDAO",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.service.dao.ProjectVersionDAO"
+											}
+										],
+										"method" : "getById",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.ResourceIdentifierDAO"
+									}, {
+										"callMeanCost" : "16",
+										"method" : "newDAO",
+										"callCosts" : ["16"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.ResourceIdentifierDAO"
+									}
+								],
+								"method" : "refreshProjectStatus",
+								"callCosts" : ["125"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.service.dao.ProjectDAO"
+							}
+						],
+						"method" : "getById",
+						"callCosts" : ["844"],
+						"callTimes" : "1",
+						"class" : "com.spss.ca.service.dao.ProjectDAO"
+					}, {
+						"callMeanCost" : "125",
+						"nextcall" : [{
+								"callMeanCost" : "125",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"method" : "get",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.AEAgentFactory"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "make",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.agent.AEAgentFactory"
+									}, {
+										"callMeanCost" : "125",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"method" : "getLogger",
+												"callCosts" : ["0", "0"],
+												"callTimes" : "2",
+												"class" : "com.spss.ca.log.LoggerFactory"
+											}, {
+												"callMeanCost" : "32",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}
+												],
+												"method" : "instance",
+												"callCosts" : ["32"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.AnalyticOutputCache"
+											}, {
+												"callMeanCost" : "17",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}
+												],
+												"method" : "instance",
+												"callCosts" : ["17"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.IndicatorCache"
+											}, {
+												"callMeanCost" : "31",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}
+												],
+												"method" : "instance",
+												"callCosts" : ["31"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.OutputMetaCache"
+											}, {
+												"callMeanCost" : "30",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "getLogger",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.log.LoggerFactory"
+													}, {
+														"callMeanCost" : "15",
+														"method" : "makeInstance",
+														"callCosts" : ["15"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.session.ProjectCache"
+													}
+												],
+												"method" : "instance",
+												"callCosts" : ["30"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.session.ProjectCache"
+											}
+										],
+										"method" : "newDAO",
+										"callCosts" : ["125"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.service.dao.ProjectDAO"
+									}
+								],
+								"method" : "getProjectDao",
+								"callCosts" : ["125"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.service.dao.DaoFactory"
+							}
+						],
+						"method" : "getProjectDAO",
+						"callCosts" : ["125"],
+						"callTimes" : "1",
+						"class" : "com.spss.ca.service.impl.ProjectServiceImpl"
+					}
+				],
+				"method" : "getProjectById",
+				"callCosts" : ["969"],
+				"callTimes" : "1",
+				"class" : "com.spss.ca.service.ProjectService"
+			}, {
+				"callMeanCost" : "0",
+				"nextcall" : [{
+						"callMeanCost" : "0",
+						"method" : "makeObjectType",
+						"callCosts" : ["0"],
+						"callTimes" : "1",
+						"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+					}, {
+						"callMeanCost" : "0",
+						"nextcall" : [{
+								"callMeanCost" : "0",
+								"method" : "getGetMethodsOfClass",
+								"callCosts" : ["0"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.util.ReflectUtil"
+							}, {
+								"callMeanCost" : "0",
+								"method" : "invokeMethod",
+								"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+								"callTimes" : "14",
+								"class" : "com.spss.ca.util.ReflectUtil"
+							}, {
+								"callMeanCost" : "0",
+								"method" : "toMethodMap",
+								"callCosts" : ["0"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.util.ReflectUtil"
+							}, {
+								"callMeanCost" : "0",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"method" : "summary",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.util.jsonalization.annotation.Persistence"
+									}
+								],
+								"method" : "getPersistenceProperties",
+								"callCosts" : ["0"],
+								"callTimes" : "1",
+								"class" : "com.spss.ca.util.jsonalization.PersistenceUtility"
+							}, {
+								"callMeanCost" : "0",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"method" : "write",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+									}, {
+										"callMeanCost" : "0",
+										"method" : "getActualTypeForGenericType",
+										"callCosts" : ["0", "0"],
+										"callTimes" : "2",
+										"class" : "com.spss.ca.util.jsonalization.type.ListType"
+									}, {
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"nextcall" : [{
+																"callMeanCost" : "0",
+																"method" : "isEnum",
+																"callCosts" : ["0"],
+																"callTimes" : "1",
+																"class" : "com.spss.ca.util.ReflectUtil"
+															}
+														],
+														"method" : "matchType",
+														"callCosts" : ["0", "0"],
+														"callTimes" : "2",
+														"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+													}, {
+														"callMeanCost" : "0",
+														"method" : "makeTypeList",
+														"callCosts" : ["0"],
+														"callTimes" : "1",
+														"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+													}
+												],
+												"method" : "makeTypeFromDeclareClass",
+												"callCosts" : ["0"],
+												"callTimes" : "1",
+												"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+											}
+										],
+										"method" : "makeTypeFromDeclareClass",
+										"callCosts" : ["0"],
+										"callTimes" : "1",
+										"class" : "com.spss.ca.util.jsonalization.type.ListType"
+									}
+								],
+								"method" : "write",
+								"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+								"callTimes" : "13",
+								"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+							}, {
+								"callMeanCost" : "0",
+								"nextcall" : [{
+										"callMeanCost" : "0",
+										"nextcall" : [{
+												"callMeanCost" : "0",
+												"nextcall" : [{
+														"callMeanCost" : "0",
+														"method" : "isEnum",
+														"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+														"callTimes" : "11",
+														"class" : "com.spss.ca.util.ReflectUtil"
+													}
+												],
+												"method" : "matchType",
+												"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+												"callTimes" : "23",
+												"class" : "com.spss.ca.util.jsonalization.type.AbstractJsonType"
+											}, {
+												"callMeanCost" : "0",
+												"method" : "makeTypeList",
+												"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+												"callTimes" : "13",
+												"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+											}
+										],
+										"method" : "makeTypeFromDeclareClass",
+										"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+										"callTimes" : "13",
+										"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+									}
+								],
+								"method" : "makeTypeFromDeclareClass",
+								"callCosts" : ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"],
+								"callTimes" : "13",
+								"class" : "com.spss.ca.util.jsonalization.type.ObjectType"
+							}
+						],
+						"method" : "write",
+						"callCosts" : ["0"],
+						"callTimes" : "1",
+						"class" : "com.spss.ca.util.jsonalization.type.ObjectType"
+					}
+				],
+				"method" : "toJson",
+				"callCosts" : ["0"],
+				"callTimes" : "1",
+				"class" : "com.spss.ca.util.jsonalization.JsonWriter"
+			}, {
+				"callMeanCost" : "0",
+				"method" : "make",
+				"callCosts" : ["0"],
+				"callTimes" : "1",
+				"class" : "com.spss.ca.util.jsonalization.type.JsonTypeFactory"
+			}, {
+				"callMeanCost" : "0",
+				"method" : "getPath",
+				"callCosts" : ["0"],
+				"callTimes" : "1",
+				"class" : "com.spss.nextgen.rest.project.executors.GetProjectInfo"
+			}
+		],
+		"method" : "CAExecute",
+		"callCosts" : ["984"],
+		"callTimes" : "1",
+		"class" : "com.spss.nextgen.rest.AbstractExecutor"
+	}
+]

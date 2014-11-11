@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ IBM Confidential
+
+ OCO Source Materials
+
+ IBM SPSS Products: Collaboration and Deployment Services
+
+ (C) Copyright IBM Corp. 2000, 2011
+
+ The source code for this program is not published or otherwise
+ divested of its trade secrets, irrespective of what has been
+ deposited with the U.S. Copyright Office.
+-->
+<project name="test" default="pack" basedir=".">
+  <!-- Pull the environment variables -->
+  <property environment="env"/>
+
+  <property name="path.build.root" value="${basedir}"/>
+  <property name="vob.root" value="${basedir}"/>
+  <property name="path.build.tools.root" value="${path.build.root}/build"/>
+  <property name="path.temp" value="${path.build.root}/temp"/>
+
+
+  <property name="dir.target" location="${path.build.root}/target"/>
+  <property name="dir.source" location="${path.build.root}/src"/>
+  <property name="dir.build" location="${path.build.root}/build"/>
+  <property name="dir.classes" location="${path.build.root}/build/classes"/>
+  <property name="dir.ccdrive" location="${path.build.root}/.."/>
+  <property name="dir.lib" location="${path.build.root}/lib"/>
+
+  <property name="jar.name" location="${dir.target}/agent.jar"/>
+
+  <path id="path.source">
+    <pathelement location="${dir.source}"/>
+  </path>
+
+  <path id="classpath.build">
+    <fileset dir="${dir.lib}">
+      <include name="*.jar"/>
+	  <exclude name="commons-logging*.jar"/>
+    </fileset>
+  </path>
+
+  <path id="classpath.build.test">
+    <path refid="classpath.build"/>
+    <pathelement location="${dir.classes}"/>
+  </path>
+
+  <path id="classpath.runtime">
+    <path refid="classpath.build"/>
+    <pathelement location="${jar.name}"/>
+  </path>
+	<target name="init">
+		<mkdir dir="${dir.classes}"/>
+		<mkdir dir="${dir.target}"/>
+	</target>
+  <!-- Compile the source  and test source -->
+  <target name="compile" depends="init">
+	<echo>path.source: ${path.source}</echo>
+    <javac source="1.6" debug="${debug}" encoding="UTF-8" classpathref="classpath.build" destdir="${dir.classes}" includes="com/test/instrument/**">
+      <classpath>
+      </classpath>
+
+      <src refid="path.source"/>
+    </javac>
+  </target>
+
+  <!-- Build application jar -->
+  <target name="jar" depends="compile">
+    <jar destfile="${jar.name}">
+	  <fileset dir="${dir.classes}">
+		<include name="com/test/instrument/**"/>
+	  </fileset>
+		<fileset dir="${dir.source}/com/test/instrument/">
+	        <include name="**/*.xml"/>
+	    </fileset>
+      <manifest>
+        <attribute name="Manifest-Version" value="1.0"/>
+        <attribute name="Premain-Class" value="com.test.instrument.PerfMonAgent"/>
+        <attribute name="Boot-Class-Path" value="H:/javassist.jar"/>
+      	
+      	<!--
+        <attribute name="Boot-Class-Path" value="D:/Downloads/InternalShare/javassist.jar"/>
+      	-->
+        
+      </manifest>
+    </jar>
+  </target>
+	<target name="pack" depends="jar">
+		<mkdir dir="${dir.target}/agent"/>
+		<mkdir dir="${dir.target}/agent/webclient"/>
+		<copy preservelastmodified="true" todir="${dir.target}/agent">
+    		<fileset file="${dir.target}/*.jar"/>
+    	</copy>	
+		<copy preservelastmodified="true" todir="${dir.target}/agent/webclient">
+    		<fileset file="${path.build.root}/webclient/**"/>			
+    	</copy>	
+	</target>
+</project>
