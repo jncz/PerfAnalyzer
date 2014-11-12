@@ -130,6 +130,7 @@ define(["md/TreeNode"],function(TreeNode){
 			var n = ns[i];
 			ctx.fillText(n.key,n.x,n.y);
 			ctx.fillText(n.callMeanCost+"/"+n.callTimes,n.x,(n.y+10));
+			ctx.fillText(n.callMeanCost*n.callTimes,n.x,(n.y+20));
 		}
 	};
 	var paintNodes = function(idx){

@@ -16,7 +16,7 @@ import com.ibm.json.java.JSONObject;
 
 public class CSV2Json {
 
-	private static final String SPERATOR = "Stack empty";
+	private static final String SPERATOR = "DataHead";
 	/**
 	 * @param args
 	 * @throws IOException 
@@ -36,7 +36,7 @@ public class CSV2Json {
 		
 		System.out.println(obj.serialize());
 		
-		File f = new File("D:\\Downloads\\InternalShare\\calltreedata2.csv");
+		File f = new File("D:\\Downloads\\InternalShare\\data\\g");
 		JSONArray arr = CSV2Json.toJson(f);
 		System.out.println(arr.toString());
 	}

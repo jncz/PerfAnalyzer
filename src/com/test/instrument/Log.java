@@ -4,38 +4,77 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Log {
+	private final String DATA_END_MARKER = "DataEnd";
+	private RandomAccessFile rf;
+	private List<String> buffer;
+	private int buffersize = 50;
+	private Log(RandomAccessFile f){
+		this.rf = f;
+		this.buffer = new ArrayList<String>();
+	}
+	public static Log inst(String executorName){
+		synchronized(Log.class){
+			RandomAccessFile rf = output(executorName);
+			return new Log(rf);
+		}
+	}
+	public void out(String msg){
+		try {
+			buffer.add(msg);
+			if(buffer.size() >= buffersize){
+				flushBuffer();
+			}else if(DATA_END_MARKER.equals(msg)){
+				flushBuffer();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
-	private static RandomAccessFile rf;
-
-	public static void log(String string) {
-		System.out.println(string);
+	private void flushBuffer() {
+		if(rf != null){
+			try {
+				String content = createContentFromBuffer();
+				rf.writeBytes(content);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+	private String createContentFromBuffer() {
+		StringBuilder sb = new StringBuilder();
+		for(String c:buffer){
+			sb.append(c);
+			sb.append("\n");
+		}
+		buffer.clear();
+		return sb.toString();
+	}
+	public void close(){
 		try {
 			if(rf != null){
-				rf.writeBytes(string);
-				rf.writeBytes("\n");
+				rf.close();
+				rf = null;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	public static void log(String string) {
+		System.out.println(string);
 	}
 
 	public static void info(String string) {
 		System.out.println(string);
-		try {
-			if(rf != null){
-				rf.writeBytes(string);
-				rf.writeBytes("\n");
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
-	public static void output(String executorName) {
+	private static RandomAccessFile output(String executorName) {
 		if(executorName == null || executorName.equals("")){
-			return;
+			return null;
 		}
 		String agenthome = System.getProperty("agenthome");
 		if(agenthome != null){
@@ -50,24 +89,15 @@ public class Log {
 				if(!f.exists()){
 					f.createNewFile();
 				}
-				rf = new RandomAccessFile(f,"rw");
+				RandomAccessFile rfs = new RandomAccessFile(f,"rw");
+				return rfs;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static void closeOutput() {
-		try {
-			if(rf != null){
-				rf.close();
-				rf = null;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return null;
 	}
 
 }

@@ -1,6 +1,10 @@
 package com.test.instrument;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
@@ -8,7 +12,6 @@ import java.util.List;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
-import javassist.CodeConverter;
 import javassist.CtBehavior;
 import javassist.CtClass;
 import javassist.CtConstructor;
@@ -41,7 +44,7 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 		if(filter.filterOut(classNameInternalForm)){
 			return null;
 		}
-		Log.log("classNameInternalForm: "+classNameInternalForm);
+//		Log.log("classNameInternalForm: "+classNameInternalForm);
 		ClassPool pool = ClassPool.getDefault();
 		CtClass cl = null;
 		try {
@@ -56,13 +59,15 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 			if(!perfPageReged){
 				regPerfPage(pool,cl);
 			}
-			CtBehavior[] methods = cl.getDeclaredBehaviors();
+			CtBehavior[] methods = cl.getDeclaredMethods();
+			//log(cl);
 			for (int i = 0; i < methods.length; i++) {
 				if (filterMethod(methods[i])) {
 					doMethod(cl,methods[i]);
 				}
 			}
 			transformed = cl.toBytecode();
+			//writeToDisk(cl.getName(),transformed);
 		} catch (Exception e) {
 			Log.log(""+e.getMessage());
 		} finally {
@@ -71,6 +76,23 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 			}
 		}
 		return transformed;
+	}
+
+	private void writeToDisk(String name, byte[] transformed) throws IOException {
+		File f = new File("d:/test/"+name+".class");
+		FileOutputStream os = new FileOutputStream(f);
+		os.write(transformed);
+		os.close();
+	}
+
+	private void log(CtClass cl) {
+		Log.info("class: "+cl.getName());
+		if(cl.getName().equals("com.spss.ca.service.impl.ProjectServiceImpl")){
+			CtBehavior[] methods = cl.getDeclaredMethods();
+			for(CtBehavior c:methods){
+				Log.info("Method: "+c.getLongName());
+			}
+		}
 	}
 
 	private void regPerfPage(ClassPool pool, CtClass cl) throws CannotCompileException {
@@ -177,10 +199,11 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 	private void doMethod(final CtClass cl, final CtBehavior method) throws NotFoundException,
 			CannotCompileException {
 		CtBehavior m = method;
-		m.insertBefore("com.test.instrument.Stats.push(\""+cl.getName()+"\",\""+m.getName()+"\",\"\"+System.nanoTime());");
-		m.insertAfter("com.test.instrument.Stats.pop();");
+		
+		m.insertBefore("com.test.instrument.Stats.push(\""+cl.getName()+"\",\""+m.getName()+"\",Thread.currentThread().getId());");
+		m.insertAfter("com.test.instrument.Stats.pop(Thread.currentThread().getId());");
 		CtClass e = cl.getClassPool().get("java.lang.Exception");
-		m.addCatch("{com.test.instrument.Stats.pop();throw $e;}", e);
+		m.addCatch("{com.test.instrument.Stats.pop(Thread.currentThread().getId());throw $e;}", e);
 		
 //		method.instrument(new ExprEditor() {
 //			public void edit(MethodCall m) throws CannotCompileException {
