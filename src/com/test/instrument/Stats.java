@@ -70,7 +70,7 @@ public class Stats {
 				detail.incrTime(cost);
 			}
 			statsMap.put(key, detail);
-			String mname = methodNameStack.pop();
+			methodNameStack.pop();
 //			if(key.indexOf("com.spss.nextgen.rest.project.executors.CreateProject.CAExecute|com.spss.ca.service.impl.ProjectServiceImpl.createProject|com.spss.ca.service.impl.ProjectServiceImpl.createProject|com.spss.ca.service.impl.ProjectServiceImpl.createProjectJob")!=-1){
 //				Log.info("key: "+key+" - "+detail);
 //			}

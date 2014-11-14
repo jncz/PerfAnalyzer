@@ -1,10 +1,11 @@
 "use strict"
 
-define(function(){
+define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 	var keycode_f = 70;
 	var keycode_a = 65;
+	var keycode_s = 83;
 	var dialogOpen = function(id){
-		var ele = document.getElementById(id);
+		var ele = $(id);
 		ele.classList.toggle("hide");
 		a.detachFilterEvent();
 		
@@ -13,17 +14,24 @@ define(function(){
 	var a = {
 		tree : null,
 		reset : function(){
-			document.removeEventListener("keydown",this.filterEventListener);
+			this.detachFilterEvent();
 		},
 		filterEventListener : function(e){
-				console.log(e.keyCode);
-				if(e.keyCode == keycode_f){
-					dialogOpen("filterDialog");
+			console.log(e.keyCode);
+			if(e.keyCode == keycode_f){
+				dialogOpen("filterDialog");
+			}
+			if(e.keyCode == keycode_a){
+				$("caseDialog").showModal();
+			}
+			if(e.keyCode == keycode_s){
+				if(statsDialog.opened){
+					statsDialog.close();
+				}else{
+					statsDialog.open();
 				}
-				if(e.keyCode == keycode_a){
-					document.getElementById("caseDialog").showModal();
-				}
-			},
+			}
+		},
 		attachFilterEvent : function(){
 			console.log("attache key down");
 			document.addEventListener("keydown",this.filterEventListener);
@@ -32,37 +40,78 @@ define(function(){
 			document.removeEventListener("keydown",this.filterEventListener);
 		},
 		
-		attacheFilterBtnEvent: function(){
-			var btn = document.getElementById("filterBtn");
+		attachFilterBtnEvent: function(){
+			var btn = $("filterBtn");
 			var that = this;
 			btn.addEventListener("click",function(){
-				var cost = document.getElementById("cost").value;
-				var times = document.getElementById("times").value;
-				var condition = document.getElementById("and").checked;
+				var cost = $("cost").value;
+				var times = $("times").value;
+				var condition = $("and").checked;
 				that.tree.filter(cost,times,condition);
 				that.tree.repaint();
 			});
 		},
 		attachFilterClostBtnEvent:function(){
-			var btn = document.getElementById("clostBtn");
+			var btn = $("clostBtn");
 			var that = this;
 			btn.addEventListener("click",function(){
 				console.log("close");
 				that.attachFilterEvent();
-				document.getElementById("filterDialog").classList.toggle("hide");
-				if(document.getElementById("filterDialog").open){
-					document.getElementById("filterDialog").close();
+				$("filterDialog").classList.toggle("hide");
+				if($("filterDialog").open){
+					$("filterDialog").close();
 				}
 			});
 		},
 		attachFilterRestBtnEvent:function(){
-			var btn = document.getElementById("resetBtn");
+			var btn = $("resetBtn");
 			var that = this;
 			btn.addEventListener("click",function(){
 				that.tree.filter(null,null,null);
 				that.tree.repaint();
 			});
 		},
+		attachArchiveBtnEvent:function(){
+			var btn = $("archiveBtn");
+			btn.addEventListener("click",function(){
+				var p = new Promise(function(resolve,reject){
+					ajax.openURL("/catalyst/ca/jsoncalltree/archive",function(http){
+						var jsonText = http.responseText;
+						var obj = JSON.parse(jsonText);
+						resolve(obj);
+					},function(){
+						reject(-1);
+					},{"Accecpt":"application/json","Content-Type":"application/json"},"GET",null,true);
+				});
+				$("progressDialog").showModal();
+				p.then(function(obj){
+					$("progressDialog").close();
+				},function(){
+					$("progressDialog").close();
+				});
+			});
+		},
+		attachReArchiveBtnEvent:function(){
+			var btn = $("reArchiveBtn");
+			btn.addEventListener("click",function(){
+				var p = new Promise(function(resolve,reject){
+					ajax.openURL("/catalyst/ca/jsoncalltree/archive/rebuild",function(http){
+						var jsonText = http.responseText;
+						var obj = JSON.parse(jsonText);
+						resolve(obj);
+					},function(){
+						reject(-1);
+					},{"Accecpt":"application/json","Content-Type":"application/json"},"GET",null,true);
+				});
+				$("progressDialog").showModal();
+				p.then(function(obj){
+					console.log(obj);
+					$("progressDialog").close();
+				},function(){
+					$("progressDialog").close();
+				});
+			});
+		}
 	};
 
 	return a;

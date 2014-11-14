@@ -2,7 +2,7 @@
 
 define(["md/ajax","md/Tree","md/Event"],function(ajax,Tree,event){
 	var a = function(id){
-		this.obj = document.getElementById(id);
+		this.obj = $(id);
 		this.setData = function(ds){
 			var datas = ds.names;
 			var tree = new Tree("container");
@@ -24,11 +24,12 @@ define(["md/ajax","md/Tree","md/Event"],function(ajax,Tree,event){
 						event.reset();
 						event.tree = tree;
 						event.attachFilterEvent();
-						event.attacheFilterBtnEvent();
+						event.attachFilterBtnEvent();
 						event.attachFilterClostBtnEvent();
 						event.attachFilterRestBtnEvent();
 						
-						document.getElementById(id).close();
+						
+						$(id).close();
 					},function(){
 						console.log("fail to load");
 					},{},"GET",null,true);
@@ -37,6 +38,8 @@ define(["md/ajax","md/Tree","md/Event"],function(ajax,Tree,event){
 			}
 		};
 		this.open = function(){
+			event.attachArchiveBtnEvent();
+			event.attachReArchiveBtnEvent();
 			this.obj.classList.toggle("hide");
 			this.obj.showModal();
 		};

@@ -124,6 +124,7 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 			pool.importPackage("com.spss.ae.http.HTTPResponse");
 			pool.importPackage("com.spss.ae.rest.executor.RequestExecutor");
 			pool.importPackage("com.spss.ae.http.response.JsonResponse");
+			pool.importPackage("com.spss.ae.http.response.ResponseOK");
 			pool.importPackage("com.spss.utilities.path.Path");
 			pool.importPackage("com.test.instrument.FileOp");
 			pool.importPackage("java.io.File");
@@ -136,18 +137,29 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 				"	System.out.println(\"JSON Call\");" +
 				"	Path path = getPath();" +
 				"	java.util.List parts = path.getParts();" +
-				"	int len = parts.size();" +
-				"	String root = System.getProperty(\"agenthome\");" +
-				"	JsonResponse res = null;" +
-				"	if(len == 2){" +
-				"		JSONObject arr = FileOp.listFileNames(root);" +
-				"		res = new com.spss.ae.http.response.JsonResponse(arr.toString());" +
-				"	}" +
-				"	if(len > 2){" +
-				"		String opv = (String)parts.get(2);" +
-				"		JSONObject arr = FileOp.getStatsData(root,opv);" +
-				"		res = new com.spss.ae.http.response.JsonResponse(arr.toString());" +
-				"	}" +
+				"	String result = FileOp.process(parts);" +
+				"	JsonResponse res = new com.spss.ae.http.response.JsonResponse(result);" +
+//				"	int len = parts.size();" +
+//				"	String root = System.getProperty(\"agenthome\");" +
+//				"	JsonResponse res = null;" +
+//				"	if(len == 2){" +
+//				"		JSONObject arr = FileOp.listFileNames(root);" +
+//				"		res = new com.spss.ae.http.response.JsonResponse(arr.toString());" +
+//				"	}" +
+//				"	if(len > 2){" +
+//				"		String opv = (String)parts.get(2);" +
+//				"		if(\"archive\".equals(opv)){" +
+//				"			if(parts.size() == 3){" +
+//				"				FileOp.archive();" +
+//				"				res = new ResponseOK();" +
+//				"			}else if(parts.size() == 4 && \"rebuild\".equals((String)parts.get(3))){" +
+//				"				" +
+//				"			}" +
+//				"		}else{" +
+//				"			JSONObject arr = FileOp.getStatsData(root,opv);" +
+//				"			res = new com.spss.ae.http.response.JsonResponse(arr.toString());" +
+//				"		}" +
+//				"	}" +
 				"	return res;" +
 				"}";
 				CtMethod m1 = CtNewMethod.make(mstr1 , cl2);
@@ -155,7 +167,10 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 				String mstr2 = "public DispatchRule[] getDispatchRules() {" +
 				"return new DispatchRule[] {" +
 				"		DispatchRule.rule(\"/ca/jsoncalltree\", HTTPMethod.GET)," +
-				"		DispatchRule.rule(\"/ca/jsoncalltree/?\", HTTPMethod.GET)" +
+				"		DispatchRule.rule(\"/ca/jsoncalltree/?\", HTTPMethod.GET)," +
+				"		DispatchRule.rule(\"/ca/jsoncalltree/archive\", HTTPMethod.GET)," +
+				"		DispatchRule.rule(\"/ca/jsoncalltree/archive/rebuild\", HTTPMethod.GET)," +
+				"		DispatchRule.rule(\"/ca/jsoncalltree/stats/?\", HTTPMethod.GET)" +
 				"	};" +
 				"}";
 				CtMethod m2 = CtNewMethod.make(mstr2, cl2);
