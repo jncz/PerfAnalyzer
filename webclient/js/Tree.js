@@ -137,7 +137,7 @@ define(["md/TreeNode"],function(TreeNode){
 		var n = [];
 		for(var i=0;i<nodes.length;i++){
 			var node = nodes[i];
-			if(node && node.currentIdx == idx){
+			if(node && node.currentIdx == idx && !node.hide){
 				n.push(node);
 			}
 		}
@@ -197,12 +197,45 @@ define(["md/TreeNode"],function(TreeNode){
 		}
 		//console.log(nodes);
 	}
+	
+	var hideTree = function(root){
+		for(var i = 0;i<nodes.length;i++){
+			var n = nodes[i];
+			if(n.parent == root){
+				n.hide = true;
+				hideTree(n);
+			}
+		}
+	};
 	var a = function(id){
 		this.id = id;
 		this.data;
 		this.init = function(){
 			var c = createCanvas(this.id);
 			ctx = c.getContext("2d");
+			c.addEventListener("dblclick",function(e){
+				console.log("db click");
+				//collision check
+				for(var i=0;i<nodes.length;i++){
+					var n = nodes[i];
+					if(n.hide){
+						continue;
+					}
+					if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
+						console.log(e.offsetX+" - "+e.offsetY+" - "+n.x+" - "+n.y+" - "+(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh));
+						n.hide = true;
+						hideTree(n);
+						ctx.save();
+						ctx.clearRect(0,0,cw,ch);
+						for(var x=0;x<=indicator.i;x++){
+							paintNodes(x);
+						}
+						ctx.restore();
+						break;
+					}
+				}
+				
+			});
 		}
 		
 		this.repaint = function(){
