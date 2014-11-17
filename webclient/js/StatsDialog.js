@@ -1,13 +1,13 @@
 define(["md/ajax","md/TrendChart"],function(ajax,TrendChart){
 	var dia = $("statsDialog");
 	var getExeName = function(){
-		return "com.spss.nextgen.rest.build.CancelBuild.CAExecute";
+		return "com.spss.nextgen.rest.build.GetBuildStatus.CAExecute";
 	};
 	
 	var paint = function(){
-//		dia.style.width = "1000px";
-//		dia.style.height = "800px";
-		var exename = getExeName();
+		//dia.style.width = "1000px";
+		//dia.style.height = "800px";
+		var exename = document.body.getAttribute("d");;
 		var p = new Promise(function(resolve,reject){
 			ajax.openURL("/catalyst/ca/jsoncalltree/stats/"+exename,function(http){
 				var jsonText = http.responseText;
@@ -22,6 +22,16 @@ define(["md/ajax","md/TrendChart"],function(ajax,TrendChart){
 	var a = {
 		charts:[],
 		opened:false,
+		refresh:function(){
+			var p = paint();
+			this.opened = dia.open;
+			var that = this;
+			p.then(function(obj){
+				var chart = new TrendChart(obj);
+				that.clearChart();
+				that.render(chart);
+			});
+		},
 		open:function(){
 			dia.showModal();
 			var p = paint();
@@ -42,8 +52,11 @@ define(["md/ajax","md/TrendChart"],function(ajax,TrendChart){
 			this.charts.push(chart);
 		},
 		clearChart:function(){
-			for(var i=0;i<this.charts.length;i++){
-				this.charts[i].destroy();
+			var cs = dia.getElementsByTagName("canvas");
+			
+			for(var i=0;i<cs.length;i++){
+				var d = cs[i];
+				d.parentNode.removeChild(d);
 			}
 		},
 	};

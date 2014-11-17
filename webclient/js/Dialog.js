@@ -1,6 +1,6 @@
 "use strict"
 
-define(["md/ajax","md/Tree","md/Event"],function(ajax,Tree,event){
+define(["md/ajax","md/Tree","md/Event","md/StatsDialog"],function(ajax,Tree,event,statsDialog){
 	var a = function(id){
 		this.obj = $(id);
 		this.setData = function(ds){
@@ -21,6 +21,7 @@ define(["md/ajax","md/Tree","md/Event"],function(ajax,Tree,event){
 						tree.data = obj2.data[0];
 						tree.repaint();
 						
+						document.body.setAttribute("d",n);
 						event.reset();
 						event.tree = tree;
 						event.attachFilterEvent();
@@ -28,7 +29,7 @@ define(["md/ajax","md/Tree","md/Event"],function(ajax,Tree,event){
 						event.attachFilterClostBtnEvent();
 						event.attachFilterRestBtnEvent();
 						
-						
+						statsDialog.refresh();
 						$(id).close();
 					},function(){
 						console.log("fail to load");
