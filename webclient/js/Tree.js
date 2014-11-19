@@ -236,6 +236,35 @@ define(["md/TreeNode"],function(TreeNode){
 				}
 				
 			});
+			c.addEventListener("click",function(e){
+				if(e.ctrlKey){
+					//only this node and its children
+					for(var i=0;i<nodes.length;i++){
+						var n = nodes[i];
+						if(n.hide){
+							continue;
+						}
+						if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
+							if(n.currentIdx){
+								for(var y=0;y<nodes.length;y++){
+									var n2 = nodes[y];
+									if(n2.currentIdx === n.currentIdx && n2 !== n){
+										n2.hide = true;
+										hideTree(n2);
+									}
+								}
+							}
+							ctx.save();
+							ctx.clearRect(0,0,cw,ch);
+							for(var x=0;x<=indicator.i;x++){
+								paintNodes(x);
+							}
+							ctx.restore();
+							break;
+						}
+					}
+				}
+			});
 		}
 		
 		this.repaint = function(){

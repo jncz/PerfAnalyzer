@@ -6,15 +6,59 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class Log {
+	private static final BlockingQueue<String[]> idxOutQueue = new ArrayBlockingQueue<String[]>(10000,true);
+	
 	private final String DATA_END_MARKER = "DataEnd";
 	private RandomAccessFile rf;
 	private List<String> buffer;
 	private int buffersize = 50;
+	
+	private static final String agenthome = System.getProperty("agenthome");
+	private static final String datafolder = agenthome+"/data/";
+	
+//	static{
+//		startIdxOutputThread();
+//	}
 	private Log(RandomAccessFile f){
 		this.rf = f;
 		this.buffer = new ArrayList<String>();
+	}
+	
+	private static void startIdxOutputThread() {
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					while (true) {
+						String[] names = idxOutQueue.take();
+						consume(names);
+					}
+				} catch (InterruptedException ex) {}
+			}
+			
+			void consume(String[] names) {
+				String foldername = names[0];
+				String datafilename = names[1];
+				String idxFile = datafolder+foldername+"/idx";
+				RandomAccessFile f = null;
+				try {
+					f = new RandomAccessFile(new File(idxFile),"rw");
+					f.writeBytes(datafilename);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally{
+					Util.close(f);
+				}
+			}
+			
+		}).start();
 	}
 	public static Log inst(String executorName){
 		synchronized(Log.class){
@@ -76,20 +120,20 @@ public class Log {
 		if(executorName == null || executorName.equals("")){
 			return null;
 		}
-		String agenthome = System.getProperty("agenthome");
 		if(agenthome != null){
-			String datafolder = agenthome+"/data/"+executorName;
-			File f = new File(datafolder);
+			String subdatafolder = datafolder+executorName;
+			File f = new File(subdatafolder);
 			if(!f.exists()){
 				f.mkdirs();
 			}
-			String datafile = datafolder+"/"+System.currentTimeMillis();
-			f = new File(datafile);
+			String datafilePath = subdatafolder+"/"+System.currentTimeMillis();
+			File datafile = new File(datafilePath);
 			try {
-				if(!f.exists()){
-					f.createNewFile();
+				if(!datafile.exists()){
+					datafile.createNewFile();
 				}
-				RandomAccessFile rfs = new RandomAccessFile(f,"rw");
+//				appendToIndex(f,datafile);
+				RandomAccessFile rfs = new RandomAccessFile(datafile,"rw");
 				return rfs;
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -98,6 +142,13 @@ public class Log {
 			}
 		}
 		return null;
+	}
+	private static void appendToIndex(File folder, File datafile) {
+		try {
+			idxOutQueue.put(new String[]{folder.getName(),datafile.getName()});
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
