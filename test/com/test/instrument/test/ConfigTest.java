@@ -42,7 +42,6 @@ public class ConfigTest {
 	@Before
 	public void setup() throws URISyntaxException, IOException{
 		Config.setAgentHome(dataFolder.getAbsolutePath());
-		Config.read();
 	}
 	
 	@Test

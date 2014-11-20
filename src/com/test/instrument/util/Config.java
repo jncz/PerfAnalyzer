@@ -14,6 +14,7 @@ import com.test.instrument.Log;
 
 public class Config {
 	private static final Properties p = new Properties();
+	private static final String KEY_ENTRY_POINT_PATTERN = "entryPointPattern";
 	private static final String KEY_INCLUDE = "include";
 	private static final String KEY_INCLUDE0 = "include0";
 	private static final String KEY_EXCLUDE = "exclude";
@@ -39,7 +40,7 @@ public class Config {
 		File f = new File(getAgentHome(),"data");
 		return f;
 	}
-	public static void read() {
+	private static void read() {
 		if(readed){
 			return;
 		}
@@ -62,10 +63,12 @@ public class Config {
 	}
 
 	public static String get(String key) {
+		read();
 		return p.getProperty(key);
 	}
 
 	public static List<String> getIncludes() {
+		read();
 		String value = Config.get(KEY_INCLUDE);
 		return toList(value);
 	}
@@ -76,6 +79,7 @@ public class Config {
 	 * @return
 	 */
 	public static List<String> getExcludes() {
+		read();
 		String value = Config.get(KEY_EXCLUDE);
 		String value2 = Config.get(KEY_SYSEXCLUDE);
 		
@@ -83,11 +87,16 @@ public class Config {
 	}
 
 	public static boolean include0() {
+		read();
 		return Boolean.parseBoolean(p.getProperty(KEY_INCLUDE0,"true"));
 	}
 
 	private static List<String> toList(String value) {
 		String[] items = value.split(SPLIT_MARKER);
 		return Arrays.asList(items);
+	}
+	public static String getEntryPointPattern() {
+		read();
+		return Config.get(KEY_ENTRY_POINT_PATTERN);
 	}
 }

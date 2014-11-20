@@ -6,13 +6,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
-import com.test.instrument.util.Util;
 
 public class Log {
-	private static final BlockingQueue<String[]> idxOutQueue = new ArrayBlockingQueue<String[]>(10000,true);
+//	private static final BlockingQueue<String[]> idxOutQueue = new ArrayBlockingQueue<String[]>(10000,true);
 	
 	private final String DATA_END_MARKER = "DataEnd";
 	private RandomAccessFile rf;
@@ -30,38 +26,38 @@ public class Log {
 		this.buffer = new ArrayList<String>();
 	}
 	
-	private static void startIdxOutputThread() {
-		new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				try {
-					while (true) {
-						String[] names = idxOutQueue.take();
-						consume(names);
-					}
-				} catch (InterruptedException ex) {}
-			}
-			
-			void consume(String[] names) {
-				String foldername = names[0];
-				String datafilename = names[1];
-				String idxFile = datafolder+foldername+"/idx";
-				RandomAccessFile f = null;
-				try {
-					f = new RandomAccessFile(new File(idxFile),"rw");
-					f.writeBytes(datafilename);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally{
-					Util.close(f);
-				}
-			}
-			
-		}).start();
-	}
+//	private static void startIdxOutputThread() {
+//		new Thread(new Runnable(){
+//
+//			@Override
+//			public void run() {
+//				try {
+//					while (true) {
+//						String[] names = idxOutQueue.take();
+//						consume(names);
+//					}
+//				} catch (InterruptedException ex) {}
+//			}
+//			
+//			void consume(String[] names) {
+//				String foldername = names[0];
+//				String datafilename = names[1];
+//				String idxFile = datafolder+foldername+"/idx";
+//				RandomAccessFile f = null;
+//				try {
+//					f = new RandomAccessFile(new File(idxFile),"rw");
+//					f.writeBytes(datafilename);
+//				} catch (FileNotFoundException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				} finally{
+//					Util.close(f);
+//				}
+//			}
+//			
+//		}).start();
+//	}
 	public static Log inst(String executorName){
 		synchronized(Log.class){
 			RandomAccessFile rf = output(executorName);
@@ -145,13 +141,13 @@ public class Log {
 		}
 		return null;
 	}
-	private static void appendToIndex(File folder, File datafile) {
-		try {
-			idxOutQueue.put(new String[]{folder.getName(),datafile.getName()});
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+//	private static void appendToIndex(File folder, File datafile) {
+//		try {
+//			idxOutQueue.put(new String[]{folder.getName(),datafile.getName()});
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static void warning(String string) {
 		

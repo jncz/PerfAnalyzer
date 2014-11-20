@@ -12,12 +12,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.test.instrument.util.Config;
+
 public class Stats {
 	private static final Map<Long,Stack<String>> methodNameContainer  = new ConcurrentHashMap<Long,Stack<String>>();
 	private static final Map<Long,Stack<Long>>   methodCostContainer  = new ConcurrentHashMap<Long,Stack<Long>>();
 	private static final Map<Long,Map<String,StatsDetail>> methodStatsContainer = new ConcurrentHashMap<Long,Map<String,StatsDetail>>();//Collections.synchronizedSortedMap(new TreeMap<String,StatsDetail>());
 	
-	private static final Pattern p = Pattern.compile("com.spss.nextgen.rest.*.CAExecute");
+	private static final Pattern p = Pattern.compile(Config.getEntryPointPattern());
 	
 	public static void push(String className,String methodName,long randomId){
 		try{

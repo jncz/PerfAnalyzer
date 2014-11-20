@@ -28,7 +28,6 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 	private static Filter filter;
 	private static final List<Attacher> attachers = new ArrayList<Attacher>();
 	static{
-		Config.read();
 		filter = new Filter(Config.getExcludes(),Config.getIncludes());
 		
 		attachers.add(new CAExecutorAttacher());
