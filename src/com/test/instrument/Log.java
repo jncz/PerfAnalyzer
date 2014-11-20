@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import com.test.instrument.util.Util;
+
 public class Log {
 	private static final BlockingQueue<String[]> idxOutQueue = new ArrayBlockingQueue<String[]>(10000,true);
 	
@@ -149,6 +151,14 @@ public class Log {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void warning(String string) {
+		
+	}
+
+	public static void error(String msg) {
+		System.err.print(msg);
 	}
 
 }

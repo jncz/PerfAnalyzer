@@ -1,4 +1,4 @@
-package com.test.instrument;
+package com.test.instrument.persist;
 
 import java.io.File;
 
