@@ -26,7 +26,7 @@
 			 }); 
 		
 		require(["md/ajax","md/Tree","md/Event","md/Dialog"],function(ajax,Tree,event,Dialog){
-			ajax.openURL("/catalyst/ca/jsoncalltree",function(h){
+			ajax.openURL("calltree",function(h){
 				var t = h.responseText;
 				var obj = JSON.parse(t);
 				var d = new Dialog("caseDialog");

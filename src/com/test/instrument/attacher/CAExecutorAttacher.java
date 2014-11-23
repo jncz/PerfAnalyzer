@@ -7,7 +7,7 @@ import javassist.CtMethod;
 import javassist.CtNewConstructor;
 import javassist.CtNewMethod;
 
-import com.test.instrument.Log;
+import com.test.instrument.util.Log;
 
 public class CAExecutorAttacher implements Attacher {
 
@@ -31,7 +31,7 @@ public class CAExecutorAttacher implements Attacher {
 		pool.importPackage("com.spss.ae.http.response.JsonResponse");
 		pool.importPackage("com.spss.ae.http.response.ResponseOK");
 		pool.importPackage("com.spss.utilities.path.Path");
-		pool.importPackage("com.test.instrument.FileOp");
+		pool.importPackage("com.test.instrument.persist.FileOp");
 		pool.importPackage("java.io.File");
 		pool.importPackage("com.ibm.json.java.JSONObject");
 		pool.importPackage("com.ibm.json.java.JSONArray");
@@ -50,11 +50,11 @@ public class CAExecutorAttacher implements Attacher {
 			cl2.addMethod(m1);
 			String mstr2 = "public DispatchRule[] getDispatchRules() {" +
 			"return new DispatchRule[] {" +
-			"		DispatchRule.rule(\"/ca/jsoncalltree\", HTTPMethod.GET)," +
-			"		DispatchRule.rule(\"/ca/jsoncalltree/?\", HTTPMethod.GET)," +
-			"		DispatchRule.rule(\"/ca/jsoncalltree/archive\", HTTPMethod.GET)," +
-			"		DispatchRule.rule(\"/ca/jsoncalltree/archive/rebuild\", HTTPMethod.GET)," +
-			"		DispatchRule.rule(\"/ca/jsoncalltree/stats/?\", HTTPMethod.GET)" +
+			"		DispatchRule.rule(\"/calltree\", HTTPMethod.GET)," +
+			"		DispatchRule.rule(\"/calltree/?\", HTTPMethod.GET)," +
+			"		DispatchRule.rule(\"/calltree/archive\", HTTPMethod.GET)," +
+			"		DispatchRule.rule(\"/calltree/archive/rebuild\", HTTPMethod.GET)," +
+			"		DispatchRule.rule(\"/calltree/stats/?\", HTTPMethod.GET)" +
 			"	};" +
 			"}";
 			CtMethod m2 = CtNewMethod.make(mstr2, cl2);
@@ -73,6 +73,7 @@ public class CAExecutorAttacher implements Attacher {
 				if(method.getName().equals("registerExecutors")){
 					method.insertAfter("RequestExecutor[] myexecutors = new RequestExecutor[] {new com.spss.rest.executors.GetJSONCallTree()};dispatcher.addExecutors(myexecutors);");
 					executorReged = true;
+					Log.info("CAE attached");
 				}
 			}
 		}catch(Exception e){

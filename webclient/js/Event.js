@@ -75,7 +75,7 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 			var btn = $("archiveBtn");
 			btn.addEventListener("click",function(){
 				var p = new Promise(function(resolve,reject){
-					ajax.openURL("/catalyst/ca/jsoncalltree/archive",function(http){
+					ajax.openURL("calltree/archive",function(http){
 						var jsonText = http.responseText;
 						var obj = JSON.parse(jsonText);
 						resolve(obj);
@@ -95,7 +95,7 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 			var btn = $("reArchiveBtn");
 			btn.addEventListener("click",function(){
 				var p = new Promise(function(resolve,reject){
-					ajax.openURL("/catalyst/ca/jsoncalltree/archive/rebuild",function(http){
+					ajax.openURL("calltree/archive/rebuild",function(http){
 						var jsonText = http.responseText;
 						var obj = JSON.parse(jsonText);
 						resolve(obj);

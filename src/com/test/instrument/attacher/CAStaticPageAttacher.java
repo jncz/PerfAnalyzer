@@ -1,6 +1,6 @@
 package com.test.instrument.attacher;
 
-import com.test.instrument.Log;
+import com.test.instrument.util.Log;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -42,6 +42,7 @@ public class CAStaticPageAttacher implements Attacher {
 						}
 					});
 					perfPageReged = true;
+					Log.info("CAP attached");
 				}
 			}
 		} catch (Exception e) {

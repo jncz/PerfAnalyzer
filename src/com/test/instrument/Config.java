@@ -1,4 +1,4 @@
-package com.test.instrument.util;
+package com.test.instrument;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,55 +9,48 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import com.test.instrument.Log;
+import com.test.instrument.util.Util;
+
 
 
 public class Config {
 	private static final Properties p = new Properties();
-	private static final String KEY_ENTRY_POINT_PATTERN = "entryPointPattern";
+	private static final String KEY_CA_ENTRY_POINT_PATTERN = "caEntryPointPattern";
+	private static final String KEY_AE_ENTRY_POINT_PATTERN = "aeEntryPointPattern";
 	private static final String KEY_INCLUDE = "include";
 	private static final String KEY_INCLUDE0 = "include0";
 	private static final String KEY_EXCLUDE = "exclude";
 	private static final String KEY_SYSEXCLUDE = "sysexclude";
 	private static final String SPLIT_MARKER = ",";
-	private static final String DEFAULT_CONFIG_FILE_NAME = "agent.config";
+	private static final String KEY_DATA_FOLDER = "datafolder";
 	
-	private static String rootPath = null;
 	private static boolean readed = false;
-	public static void setAgentHome(String path){
-		rootPath = path;
-	}
-	private static File getAgentHome(){
-		if(rootPath == null){
-			Log.error("root path is not set,get the value from agenthome");
-			return new File(System.getProperty("agenthome"));
-		}else{
-			return new File(rootPath);
-		}
-	}
 	
 	public static File getDataFolder(){
-		File f = new File(getAgentHome(),"data");
+		File f = new File(Config.get(KEY_DATA_FOLDER));
+
 		return f;
 	}
 	private static void read() {
 		if(readed){
 			return;
 		}
-		File f = new File(getAgentHome(),DEFAULT_CONFIG_FILE_NAME);
-		if(f.exists()){
-			InputStream is = null;
-			try {
-				is = new FileInputStream(f);
-				p.clear();
-				p.load(is);
-				readed = true;
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} finally{
-				Util.close(is);
+		if(System.getProperty("config") != null){
+			File f = new File(System.getProperty("config"));
+			if(f.exists()){
+				InputStream is = null;
+				try {
+					is = new FileInputStream(f);
+					p.clear();
+					p.load(is);
+					readed = true;
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally{
+					Util.close(is);
+				}
 			}
 		}
 	}
@@ -95,8 +88,13 @@ public class Config {
 		String[] items = value.split(SPLIT_MARKER);
 		return Arrays.asList(items);
 	}
-	public static String getEntryPointPattern() {
+	public static String getAEEntryPointPattern() {
 		read();
-		return Config.get(KEY_ENTRY_POINT_PATTERN);
+		return Config.get(KEY_AE_ENTRY_POINT_PATTERN);
+	}
+
+	public static String getCAEntryPointPattern() {
+		read();
+		return Config.get(KEY_CA_ENTRY_POINT_PATTERN);
 	}
 }

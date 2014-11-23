@@ -9,7 +9,7 @@ define(["md/ajax","md/TrendChart"],function(ajax,TrendChart){
 		//dia.style.height = "800px";
 		var exename = document.body.getAttribute("d");;
 		var p = new Promise(function(resolve,reject){
-			ajax.openURL("/catalyst/ca/jsoncalltree/stats/"+exename,function(http){
+			ajax.openURL("calltree/stats/"+exename,function(http){
 				var jsonText = http.responseText;
 				var obj = JSON.parse(jsonText);
 				resolve(obj);

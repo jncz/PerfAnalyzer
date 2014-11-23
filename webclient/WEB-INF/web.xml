@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>Perf</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	<filter>
+		<filter-name>com.test.instrument.servlet.CallTreeFilter</filter-name>
+		<filter-class>com.test.instrument.servlet.CallTreeFilter</filter-class>
+		<init-param>
+			<param-name>exclude</param-name>
+			<param-value>html,css,js,json,jpg,jpeg,png,gif,htm</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>com.test.instrument.servlet.CallTreeFilter</filter-name>
+		<!-- 
+		<url-pattern>/*</url-pattern>
+		 -->
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+		<servlet-class>com.test.instrument.servlet.CallTree</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+		<url-pattern>/calltree</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+		<url-pattern>/calltree/*</url-pattern>
+	</servlet-mapping>
+	<!-- 
+	<servlet-mapping>
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+		<url-pattern>/calltree/archive</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+		<url-pattern>/calltree/archive/rebuild</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>com.test.instrument.servlet.CallTree</servlet-name>
+		<url-pattern>/calltree/stats/*</url-pattern>
+	</servlet-mapping>
+	 -->
+</web-app>

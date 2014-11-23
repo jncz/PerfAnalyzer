@@ -17,30 +17,44 @@ import java.util.Set;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 import com.test.instrument.CSV2Json;
+//import com.test.instrument.Config;
+import com.test.instrument.servlet.AppConfig;
 import com.test.instrument.util.Util;
 
 public class FileOp {
 	private static final String SUFFIX_JSON = ".json";
 	private static final String STATS_FILE = "stats.json";
 
-	public static JSONObject listFileNames(String root){
+	public static JSONObject listFileNames(){
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
-		File f = new File(root+"/data");
+		File f = AppConfig.getDataFolder();
 		if(f.exists()){			
 			String[] names = f.list();
 			for(String n:names){
 				arr.add(n);
 			}
 		}
+//		File aef = Config.getAEDataFolder();
+//		
+//		if(aef != null && aef.exists() && !aef.equals(f)){
+//			String[] names = aef.list();
+//			for(String n:names){
+//				arr.add(n);
+//			}
+//		}
 		obj.put("names", arr);
 		return obj;
 	}
 	
-	public static JSONObject getStatsData(String path,String opv){
+	public static JSONObject getStatsData(String opv){
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
-		File f = new File(path+"/data/"+opv);
+		File f = new File(AppConfig.getDataFolder(),opv);
+//		if(Config.getAEDataFolder() != null && !f.equals(Config.getAEDataFolder()) && opv.startsWith("com.spss.ae")){
+//			f = new File(Config.getAEDataFolder(),opv);
+//		}
+//			
 		if(f.exists()){
 			File[] fs = f.listFiles(new FileFilter(){
 
@@ -86,10 +100,13 @@ public class FileOp {
 	 * @param buildAll - if true, rebuild all of the stats data
 	 */
 	public static void archive(final boolean buildAll){
-		String path = System.getProperty("agenthome");
-		File f = new File(path+"/data/");
-		
-		final Map<String,JSONArray> statsMap = buildAll?new HashMap<String,JSONArray>():initStatsMap(f);
+		File caf = AppConfig.getDataFolder();
+//		File aef = Config.getAEDataFolder();
+		File[] roots = new File[]{caf};
+//		if(aef != null && !caf.equals(aef)){
+//			roots = new File[]{caf,aef};
+//		}
+		final Map<String,JSONArray> statsMap = buildAll?new HashMap<String,JSONArray>():initStatsMap(roots);
 		
 		FileProcessor<File> processor = new FileProcessor<File>(){
 
@@ -122,7 +139,7 @@ public class FileOp {
 			}
 			
 		};
-		listFiles(f,new FileFilter(){
+		listFiles(roots,new FileFilter(){
 			@Override
 			public boolean accept(File pathname) {
 				return pathname.isFile() && !pathname.getName().toLowerCase().endsWith(SUFFIX_JSON) && (buildAll?true:!new File(pathname.getParentFile(),pathname.getName()+SUFFIX_JSON).exists());
@@ -131,30 +148,32 @@ public class FileOp {
 		flushStats(statsMap);
 	}
 	
-	private static Map<String, JSONArray> initStatsMap(File dataRoot) {
+	private static Map<String, JSONArray> initStatsMap(File[] dataRoots) {
 		final Map<String,JSONArray> statsMap = new HashMap<String,JSONArray>();
-		if(dataRoot != null && dataRoot.exists()){			
-			File[] files = dataRoot.listFiles(new FileFilter(){
-
-				@Override
-				public boolean accept(File pathname) {
-					return pathname.isDirectory();
-				}});
-			
-			for(File f:files){
-				File statsFile = new File(f,STATS_FILE);
-				if(statsFile.exists()){
-					FileReader fr = null;
-					try {
-						fr = new FileReader(statsFile);
-						JSONArray arr = JSONArray.parse(fr);
-						statsMap.put(f.getName(), arr);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally{
-						Util.close(fr);
+		for(File dataRoot:dataRoots){
+			if(dataRoot != null && dataRoot.exists()){
+				File[] files = dataRoot.listFiles(new FileFilter(){
+	
+					@Override
+					public boolean accept(File pathname) {
+						return pathname.isDirectory();
+					}});
+				
+				for(File f:files){
+					File statsFile = new File(f,STATS_FILE);
+					if(statsFile.exists()){
+						FileReader fr = null;
+						try {
+							fr = new FileReader(statsFile);
+							JSONArray arr = JSONArray.parse(fr);
+							statsMap.put(f.getName(), arr);
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						} finally{
+							Util.close(fr);
+						}
 					}
 				}
 			}
@@ -163,8 +182,8 @@ public class FileOp {
 	}
 
 	private static void flushStats(Map<String, JSONArray> statsMap) {
-		String path = System.getProperty("agenthome");
-		File root = new File(path+"/data/");
+		File caroot = AppConfig.getDataFolder();
+//		File aeroot = Config.getAEDataFolder();
 		
 		Set<Entry<String, JSONArray>> set = statsMap.entrySet();
 		Iterator<Entry<String, JSONArray>> it = set.iterator();
@@ -172,8 +191,11 @@ public class FileOp {
 			Entry<String, JSONArray> entry = it.next();
 			String filename = entry.getKey();
 			JSONArray stats = entry.getValue();
-			
-			File statsFile = new File(new File(root,filename),STATS_FILE);
+			File parent = caroot;
+//			if(aeroot != null && !caroot.equals(aeroot) && filename.startsWith("com.spss.ae")){
+//				parent = aeroot;
+//			}
+			File statsFile = new File(new File(parent,filename),STATS_FILE);
 			FileWriter fw = null;
 			try{
 				fw = new FileWriter(statsFile);
@@ -198,6 +220,11 @@ public class FileOp {
 		return statsObj;
 	}
 
+	private static void listFiles(File[] roots,FileFilter filter,FileProcessor<File> processor){
+		for(File f:roots){
+			listFiles(f,filter,processor);
+		}
+	}
 	private static void listFiles(File root,FileFilter filter,FileProcessor<File> processor){
 		File[] files = root.listFiles();
 		for(File f:files){
@@ -213,27 +240,26 @@ public class FileOp {
 	
 	public static String process(List parts){
 		String result = null;
-		String root = System.getProperty("agenthome");
 		int len = parts.size();
 		switch(len){
-			case 2:
-				JSONObject arr = FileOp.listFileNames(root);
+			case 1:
+				JSONObject arr = FileOp.listFileNames();
 				result = arr.toString();
 				break;
-			case 3:
-				String v = (String) parts.get(2);
+			case 2:
+				String v = (String) parts.get(1);
 				if("archive".equalsIgnoreCase(v)){
 					FileOp.archive(false);
 					JSONObject obj = new JSONObject();
 					obj.put("ok", 200);
 					result = obj.toString();
 				}else{
-					result = FileOp.getStatsData(root,v).toString();
+					result = FileOp.getStatsData(v).toString();
 				}
 				break;
-			case 4:
-				String v1 = (String) parts.get(2);
-				String v2 = (String) parts.get(3);
+			case 3:
+				String v1 = (String) parts.get(1);
+				String v2 = (String) parts.get(2);
 				if("archive".equalsIgnoreCase(v1) && "rebuild".equalsIgnoreCase(v2)){
 					FileOp.archive(true);
 					JSONObject obj = new JSONObject();
@@ -248,9 +274,14 @@ public class FileOp {
 		return result;
 	}
 
-	private static JSONArray getLongTermStats(String foldername) {
-		String path = System.getProperty("agenthome");
-		File root = new File(path+"/data/"+foldername);
+	public static JSONArray getLongTermStats(String foldername) {
+		File caf = AppConfig.getDataFolder();
+//		File aef = Config.getAEDataFolder();
+		File parent = caf;
+//		if(aef != null && !caf.equals(aef) && foldername.startsWith("com.spss.ae")){
+//			parent = aef;
+//		}
+		File root = new File(parent,foldername);
 		File f = new File(root,STATS_FILE);
 		FileReader fr = null;
 		try {

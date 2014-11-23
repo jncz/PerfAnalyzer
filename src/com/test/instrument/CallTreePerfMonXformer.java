@@ -4,21 +4,18 @@ import java.io.ByteArrayInputStream;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
-import java.util.ArrayList;
-import java.util.List;
 
 import javassist.CannotCompileException;
+import javassist.ClassPath;
 import javassist.ClassPool;
 import javassist.CtBehavior;
 import javassist.CtClass;
+import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
-import com.test.instrument.attacher.AEExecutorAttacher;
 import com.test.instrument.attacher.Attacher;
-import com.test.instrument.attacher.CAExecutorAttacher;
-import com.test.instrument.attacher.CAStaticPageAttacher;
 import com.test.instrument.filter.Filter;
-import com.test.instrument.util.Config;
+import com.test.instrument.util.Log;
 /**
  * 
  * @author pli
@@ -26,13 +23,12 @@ import com.test.instrument.util.Config;
  */
 public class CallTreePerfMonXformer implements ClassFileTransformer {
 	private static Filter filter;
-	private static final List<Attacher> attachers = new ArrayList<Attacher>();
+//	private static final List<Attacher> attachers = new ArrayList<Attacher>();
 	static{
 		filter = new Filter(Config.getExcludes(),Config.getIncludes());
 		
-		attachers.add(new CAExecutorAttacher());
-		attachers.add(new CAStaticPageAttacher());
-		attachers.add(new AEExecutorAttacher());
+//		attachers.add(new CAExecutorAttacher());
+//		attachers.add(new CAStaticPageAttacher());
 	}
 	public byte[] transform(ClassLoader loader, String classNameInternalForm,
 			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
@@ -41,7 +37,12 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 		if(filter.filterOut(classNameInternalForm)){
 			return null;
 		}
+//		Log.info("Class:"+classNameInternalForm);
 		ClassPool pool = ClassPool.getDefault();
+		pool.appendSystemPath();
+		
+		ClassPath cp = new LoaderClassPath(loader);
+		pool.appendClassPath(cp );
 		CtClass cl = null;
 		try {
 			cl = pool.makeClass(new ByteArrayInputStream(classfileBuffer));
@@ -49,8 +50,11 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 			if(filter.filterOut(className) || cl.isInterface() || cl.isEnum()){
 				return null;
 			}
+//			Log.info("Class2:"+className);
 			
-			attachAttacher(pool,cl);
+//			if(Config.isDevMode()){
+//				attachAttacher(pool,cl);
+//			}
 			
 			CtBehavior[] methods = cl.getDeclaredMethods();
 			//log(cl);
@@ -71,11 +75,14 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 		return transformed;
 	}
 
-	private void attachAttacher(ClassPool pool, CtClass cl) {
-		for(Attacher att : attachers){
-			att.attach(pool, cl);
-		}
-	}
+//	private void attachAttacher(ClassPool pool, CtClass cl) {
+////		Log.info("try attach attacher");
+//		for(Attacher att : attachers){
+////			Log.info("attach attacher "+att.attachPoint());
+//			att.attach(pool, cl);
+////			Log.info("attach attacher "+att.attachPoint()+" done");
+//		}
+//	}
 
 //	private void writeToDisk(String name, byte[] transformed) throws IOException {
 //		File f = new File("d:/test/"+name+".class");

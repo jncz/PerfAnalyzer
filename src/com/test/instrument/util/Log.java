@@ -1,4 +1,4 @@
-package com.test.instrument;
+package com.test.instrument.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,6 +7,9 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.test.instrument.Config;
+
+
 public class Log {
 //	private static final BlockingQueue<String[]> idxOutQueue = new ArrayBlockingQueue<String[]>(10000,true);
 	
@@ -14,9 +17,6 @@ public class Log {
 	private RandomAccessFile rf;
 	private List<String> buffer;
 	private int buffersize = 50;
-	
-	private static final String agenthome = System.getProperty("agenthome");
-	private static final String datafolder = agenthome+"/data/";
 	
 //	static{
 //		startIdxOutputThread();
@@ -118,26 +118,22 @@ public class Log {
 		if(executorName == null || executorName.equals("")){
 			return null;
 		}
-		if(agenthome != null){
-			String subdatafolder = datafolder+executorName;
-			File f = new File(subdatafolder);
-			if(!f.exists()){
-				f.mkdirs();
+		File f = new File(Config.getDataFolder(),executorName);
+		if(!f.exists()){
+			f.mkdirs();
+		}
+		File datafile = new File(f,""+System.currentTimeMillis());
+		try {
+			if(!datafile.exists()){
+				datafile.createNewFile();
 			}
-			String datafilePath = subdatafolder+"/"+System.currentTimeMillis();
-			File datafile = new File(datafilePath);
-			try {
-				if(!datafile.exists()){
-					datafile.createNewFile();
-				}
-//				appendToIndex(f,datafile);
-				RandomAccessFile rfs = new RandomAccessFile(datafile,"rw");
-				return rfs;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+//			appendToIndex(f,datafile);
+			RandomAccessFile rfs = new RandomAccessFile(datafile,"rw");
+			return rfs;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

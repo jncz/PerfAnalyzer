@@ -12,14 +12,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.test.instrument.util.Config;
+import com.test.instrument.util.Log;
 
 public class Stats {
 	private static final Map<Long,Stack<String>> methodNameContainer  = new ConcurrentHashMap<Long,Stack<String>>();
 	private static final Map<Long,Stack<Long>>   methodCostContainer  = new ConcurrentHashMap<Long,Stack<Long>>();
 	private static final Map<Long,Map<String,StatsDetail>> methodStatsContainer = new ConcurrentHashMap<Long,Map<String,StatsDetail>>();//Collections.synchronizedSortedMap(new TreeMap<String,StatsDetail>());
+	private static final Map<Long,String> entryNames = new ConcurrentHashMap<Long,String>();
 	
-	private static final Pattern p = Pattern.compile(Config.getEntryPointPattern());
+	private static final Pattern p1 = Pattern.compile(Config.getCAEntryPointPattern());
+	private static final Pattern p2 = Pattern.compile(Config.getAEEntryPointPattern());
 	
 	public static void push(String className,String methodName,long randomId){
 		try{
@@ -61,6 +63,9 @@ public class Stats {
 					appEntry = findAppEntry(k);
 				}
 			}
+			if(appEntry != null){
+				entryNames.put(randomId, appEntry);
+			}
 			
 			if(key.lastIndexOf(".")!=-1){
 				key = key.substring(0, key.length()-1);
@@ -73,16 +78,11 @@ public class Stats {
 			}
 			statsMap.put(key, detail);
 			methodNameStack.pop();
-//			if(key.indexOf("com.spss.nextgen.rest.project.executors.CreateProject.CAExecute|com.spss.ca.service.impl.ProjectServiceImpl.createProject|com.spss.ca.service.impl.ProjectServiceImpl.createProject|com.spss.ca.service.impl.ProjectServiceImpl.createProjectJob")!=-1){
-//				Log.info("key: "+key+" - "+detail);
-//			}
-//			if(mname.equals("com.spss.ca.service.impl.ProjectServiceImpl.createProjectJob")){
-//				Log.info("MethodName: "+mname);
-//			}
 			if(methodNameStack.isEmpty()){
 				//output the tree 
-				logMap(statsMap,appEntry);
+				logMap(statsMap,entryNames.get(randomId));
 				statsMap.clear();
+				entryNames.remove(randomId);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -91,10 +91,13 @@ public class Stats {
 	}
 	
 	private static String findAppEntry(String k) {
-		Matcher matcher = p.matcher(k);
-		if(matcher.find()){
+		Matcher matcher1 = p1.matcher(k);
+		Matcher matcher2 = p2.matcher(k);
+		
+		if(matcher1.find() || matcher2.find()){
 			return k;
 		}
+
 		return null;
 	}
 	private static void logMap(Map<String, StatsDetail> m2, String appEntry) {
@@ -145,7 +148,9 @@ public class Stats {
 //		Matcher mt = p.matcher("com.spss.nextgen.rest.project.version.whatelse.GetWhatElse.CAExecute");
 //		Matcher mt = p.matcher("com.spss.nextgen.rest.help.executors.GetHelp.CAExecute");
 //		Matcher mt = p.matcher("com.spss.nextgen.rest.datamodel.executors.GetTargets.CAExecute");
-		Matcher mt = p.matcher("com.spss.nextgen.rest.datamodel.executors.GetTargets.CAExecute(java.lang.String[])");
+//		Matcher mt = p.matcher("com.spss.nextgen.rest.datamodel.executors.GetTargets.CAExecute(java.lang.String[])");
+		Pattern p2 = Pattern.compile("com.spss.ae.rest*.executors.*.execute");
+		Matcher mt = p2.matcher("com.spss.ae.restfileapi.executors.AppendToFile.execute");
 		if(mt.find()){
 			System.out.println("match");
 		}else{

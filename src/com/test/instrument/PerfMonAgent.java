@@ -1,11 +1,12 @@
 package com.test.instrument;
-import java.lang.instrument.Instrumentation;
 import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.Instrumentation;
 
+import com.test.instrument.util.Log;
 import com.test.instrument.util.Util;
 
 public class PerfMonAgent {
-    private static final String AGENT_HOME = "agenthome";
+    private static final String CONFIG = "config";
 	static private Instrumentation inst = null;
     /**
      * This method is called before the application�s main-method is called,
@@ -22,7 +23,7 @@ public class PerfMonAgent {
         inst.addTransformer(trans);
     }
 	private static void systemEnvCheck() {
-		String agenthome = System.getProperty(AGENT_HOME);
+		String agenthome = System.getProperty(CONFIG);
 		if(Util.isEmptyString(agenthome)){
 			Log.error("agenthome should be set in your evironment, or you -Dagenthome for your jvm parameter");
 			System.exit(1);

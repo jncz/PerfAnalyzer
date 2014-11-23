@@ -14,7 +14,7 @@ define(["md/ajax","md/Tree","md/Event","md/StatsDialog"],function(ajax,Tree,even
 				div.addEventListener("click",function(e){
 					var n = this.getAttribute("d");
 					
-					ajax.openURL("/catalyst/ca/jsoncalltree/"+n,function(h){
+					ajax.openURL("calltree/"+n,function(h){
 						var t2 = h.responseText;
 						var obj2 = JSON.parse(t2);
 						

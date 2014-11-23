@@ -18,18 +18,15 @@
 
   <property name="path.build.root" value="${basedir}"/>
   <property name="vob.root" value="${basedir}"/>
-  <property name="path.build.tools.root" value="${path.build.root}/build"/>
-  <property name="path.temp" value="${path.build.root}/temp"/>
-
 
   <property name="dir.target" location="${path.build.root}/target"/>
   <property name="dir.source" location="${path.build.root}/src"/>
-  <property name="dir.build" location="${path.build.root}/build"/>
-  <property name="dir.classes" location="${path.build.root}/build/classes"/>
-  <property name="dir.ccdrive" location="${path.build.root}/.."/>
+  <property name="dir.build" location="${dir.target}/build"/>
+  <property name="dir.classes" location="${dir.build}/classes"/>
   <property name="dir.lib" location="${path.build.root}/lib"/>
 
   <property name="jar.name" location="${dir.target}/agent.jar"/>
+  <property name="servletjar.name" location="${dir.target}/agentservlet.jar"/>
 
   <path id="path.source">
     <pathelement location="${dir.source}"/>
@@ -51,13 +48,12 @@
     <path refid="classpath.build"/>
     <pathelement location="${jar.name}"/>
   </path>
-	<target name="init">
+	<target name="init" depends="clean">
 		<mkdir dir="${dir.classes}"/>
 		<mkdir dir="${dir.target}"/>
 	</target>
   <!-- Compile the source  and test source -->
   <target name="compile" depends="init">
-	<echo>path.source: ${path.source}</echo>
     <javac source="1.6" debug="true" encoding="UTF-8" classpathref="classpath.build" destdir="${dir.classes}" includes="com/test/instrument/**">
       <classpath>
       </classpath>
@@ -70,11 +66,14 @@
   <target name="jar" depends="compile">
     <jar destfile="${jar.name}">
 	  <fileset dir="${dir.classes}">
-		<include name="com/test/instrument/**"/>
+		<include name="com/test/instrument/*"/>
+	  	<!--
+		<include name="com/test/instrument/attacher/*"/>
+		-->
+		<include name="com/test/instrument/filter/*"/>
+		<include name="com/test/instrument/persist/*"/>
+		<include name="com/test/instrument/util/*"/>
 	  </fileset>
-		<fileset dir="${dir.source}/com/test/instrument/">
-	        <include name="**/*.xml"/>
-	    </fileset>
       <manifest>
         <attribute name="Manifest-Version" value="1.0"/>
         <attribute name="Premain-Class" value="com.test.instrument.PerfMonAgent"/>
@@ -86,8 +85,30 @@
         
       </manifest>
     </jar>
+  	<jar destfile="${servletjar.name}">
+	  <fileset dir="${dir.classes}">
+		<include name="com/test/instrument/servlet/*"/>
+	  	<include name="com/test/instrument/persist/*"/>
+		<include name="com/test/instrument/util/*"/>
+		<include name="com/test/instrument/CSV2Json*"/>
+	  </fileset>
+    </jar>
   </target>
-	<target name="pack" depends="jar">
+	<target name="war" depends="jar">
+		<war destfile="${dir.target}/perf.war" webxml="webclient/WEB-INF/web.xml">
+			<fileset dir="webclient"/>
+			<lib dir="./lib">
+			  <exclude name="commons-compress-1.7.jar"/>
+			  <exclude name="javassist.jar"/>
+			  <exclude name="log4j.jar"/>
+			  <exclude name="j2ee.jar"/>
+			</lib>
+			<lib dir="${dir.target}">
+			  <include name="agentservlet.jar"/>
+			</lib>
+		</war>
+	</target>
+	<target name="pack" depends="war">
 		<mkdir dir="${dir.target}/agent"/>
 		<mkdir dir="${dir.target}/agent/webclient"/>
 		<copy preservelastmodified="true" todir="${dir.target}/agent">
@@ -96,5 +117,8 @@
 		<copy preservelastmodified="true" todir="${dir.target}/agent/webclient">
     		<fileset file="${path.build.root}/webclient/**"/>			
     	</copy>	
+	</target>
+	<target name="clean">
+		<delete dir="${dir.classes}"></delete>
 	</target>
 </project>
