@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.Set;
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 import com.test.instrument.CSV2Json;
-//import com.test.instrument.Config;
 import com.test.instrument.servlet.AppConfig;
 import com.test.instrument.util.Util;
 
@@ -35,14 +35,6 @@ public class FileOp {
 				arr.add(n);
 			}
 		}
-//		File aef = Config.getAEDataFolder();
-//		
-//		if(aef != null && aef.exists() && !aef.equals(f)){
-//			String[] names = aef.list();
-//			for(String n:names){
-//				arr.add(n);
-//			}
-//		}
 		obj.put("names", arr);
 		return obj;
 	}
@@ -51,10 +43,6 @@ public class FileOp {
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
 		File f = new File(AppConfig.getDataFolder(),opv);
-//		if(Config.getAEDataFolder() != null && !f.equals(Config.getAEDataFolder()) && opv.startsWith("com.spss.ae")){
-//			f = new File(Config.getAEDataFolder(),opv);
-//		}
-//			
 		if(f.exists()){
 			File[] fs = f.listFiles(new FileFilter(){
 
@@ -83,6 +71,7 @@ public class FileOp {
 			if(jsonFile.exists()){
 				try {
 					arr = JSONArray.parse(new FileReader(jsonFile));
+					appendTime(arr, jsonFile);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -90,10 +79,23 @@ public class FileOp {
 				}
 			}else{
 				arr = CSV2Json.toJson(latestFile);
+				appendTime(arr, latestFile);
 			}
 		}
 		obj.put("data", arr);
 		return obj;
+	}
+
+	private static void appendTime(JSONArray arr, File jsonFile) {
+		Iterator it = arr.iterator();
+		while(it.hasNext()){
+			JSONArray arr2 = (JSONArray) it.next();
+			Iterator it2 = arr2.iterator();
+			while(it2.hasNext()){
+				JSONObject obj2 = (JSONObject) it2.next();
+				obj2.put("createdTime", jsonFile.lastModified());
+			}
+		}
 	}
 	/**
 	 * 
@@ -101,41 +103,15 @@ public class FileOp {
 	 */
 	public static void archive(final boolean buildAll){
 		File caf = AppConfig.getDataFolder();
-//		File aef = Config.getAEDataFolder();
 		File[] roots = new File[]{caf};
-//		if(aef != null && !caf.equals(aef)){
-//			roots = new File[]{caf,aef};
-//		}
-		final Map<String,JSONArray> statsMap = buildAll?new HashMap<String,JSONArray>():initStatsMap(roots);
-		
-		FileProcessor<File> processor = new FileProcessor<File>(){
 
+		final List<File> newfiles = new ArrayList<File>();
+		
+		FileProcessor<File> collector = new FileProcessor<File>(){
+			
 			@Override
 			public void process(File f) {
-				JSONArray arr = CSV2Json.toJson(f);
-				JSONObject statsObj = addToStats(arr,f.lastModified());
-				
-				String key = f.getParentFile().getName();
-				JSONArray stats = statsMap.get(key);
-				if(stats == null){
-					stats = new JSONArray();
-					statsMap.put(key, stats);
-				}
-				stats.add(statsObj);
-				
-				String newname = f.getName()+SUFFIX_JSON;
-				FileWriter fw = null;
-				File newfile = new File(f.getParent(),newname);
-				try {
-					fw = new FileWriter(newfile);
-					arr.serialize(fw);
-				} catch (IOException e) {
-					e.printStackTrace();
-					throw new RuntimeException(e);
-				} finally{
-					Util.close(fw);
-					newfile.setLastModified(f.lastModified());
-				}
+				newfiles.add(f);
 			}
 			
 		};
@@ -143,9 +119,47 @@ public class FileOp {
 			@Override
 			public boolean accept(File pathname) {
 				return pathname.isFile() && !pathname.getName().toLowerCase().endsWith(SUFFIX_JSON) && (buildAll?true:!new File(pathname.getParentFile(),pathname.getName()+SUFFIX_JSON).exists());
-			}},processor );
+			}},collector );
 		
-		flushStats(statsMap);
+		if(newfiles.size() > 0){
+			Map<String,JSONArray> statsMap = buildAll?new HashMap<String,JSONArray>():initStatsMap(roots);
+			archiveFiles(newfiles, statsMap);
+			flushStats(statsMap);
+		}
+	}
+
+	private static void archiveFiles(final List<File> newfiles,
+			Map<String, JSONArray> statsMap) {
+		for(File f:newfiles){
+			archiveFile(statsMap, f);
+		}
+	}
+
+	private static void archiveFile(Map<String, JSONArray> statsMap, File f) {
+		JSONArray arr = CSV2Json.toJson(f);
+		JSONObject statsObj = addToStats(arr,f.lastModified());
+		
+		String key = f.getParentFile().getName();
+		JSONArray stats = statsMap.get(key);
+		if(stats == null){
+			stats = new JSONArray();
+			statsMap.put(key, stats);
+		}
+		stats.add(statsObj);
+		
+		String newname = f.getName()+SUFFIX_JSON;
+		FileWriter fw = null;
+		File newfile = new File(f.getParent(),newname);
+		try {
+			fw = new FileWriter(newfile);
+			arr.serialize(fw);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		} finally{
+			Util.close(fw);
+			newfile.setLastModified(f.lastModified());
+		}
 	}
 	
 	private static Map<String, JSONArray> initStatsMap(File[] dataRoots) {
@@ -183,7 +197,6 @@ public class FileOp {
 
 	private static void flushStats(Map<String, JSONArray> statsMap) {
 		File caroot = AppConfig.getDataFolder();
-//		File aeroot = Config.getAEDataFolder();
 		
 		Set<Entry<String, JSONArray>> set = statsMap.entrySet();
 		Iterator<Entry<String, JSONArray>> it = set.iterator();
@@ -192,9 +205,6 @@ public class FileOp {
 			String filename = entry.getKey();
 			JSONArray stats = entry.getValue();
 			File parent = caroot;
-//			if(aeroot != null && !caroot.equals(aeroot) && filename.startsWith("com.spss.ae")){
-//				parent = aeroot;
-//			}
 			File statsFile = new File(new File(parent,filename),STATS_FILE);
 			FileWriter fw = null;
 			try{
@@ -276,11 +286,7 @@ public class FileOp {
 
 	public static JSONArray getLongTermStats(String foldername) {
 		File caf = AppConfig.getDataFolder();
-//		File aef = Config.getAEDataFolder();
 		File parent = caf;
-//		if(aef != null && !caf.equals(aef) && foldername.startsWith("com.spss.ae")){
-//			parent = aef;
-//		}
 		File root = new File(parent,foldername);
 		File f = new File(root,STATS_FILE);
 		FileReader fr = null;

@@ -185,10 +185,14 @@ define(["md/TreeNode"],function(TreeNode){
 			}
 		}
 	};
+	var paintCallTime = function(ctx,createTime){
+		ctx.fillText(new Date(createTime),10,10);
+	};
 	var paint = function(ctx,data){
+		var d = data[0];
+		paintCallTime(ctx,d.createdTime);
 		nodes = [];
 		indicator.reset();
-		var d = data[0];
 		p(indicator,data,null);
 		
 		resetParent();
