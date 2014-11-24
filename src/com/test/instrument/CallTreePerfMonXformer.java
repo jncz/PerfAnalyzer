@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
 
 import javassist.CannotCompileException;
 import javassist.ClassPath;
@@ -13,7 +14,6 @@ import javassist.CtClass;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
-import com.test.instrument.attacher.Attacher;
 import com.test.instrument.filter.Filter;
 import com.test.instrument.util.Log;
 /**

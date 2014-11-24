@@ -46,6 +46,13 @@ public class PatternTest {
 		Assert.assertTrue(mt.matches());
 	}
 	@Test
+	public void testCAPattern4(){
+		Pattern p = Pattern.compile("^(com\\.spss\\.ca\\.service\\.job\\.AsyncJob)+(.)+(execute)$");
+		Matcher mt = p.matcher("com.spss.ca.service.job.AsyncJob.execute");
+		
+		Assert.assertTrue(mt.matches());
+	}
+	@Test
 	public void testURLPattern(){
 		Pattern p = Pattern.compile("/calltree");
 		Matcher mt = p.matcher("/calltree");

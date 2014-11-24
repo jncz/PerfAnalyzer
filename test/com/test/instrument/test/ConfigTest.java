@@ -41,9 +41,9 @@ public class ConfigTest extends BaseTest{
 		Assert.assertEquals(true, include);
 	}
 	
-//	@Test
-//	public void testGetDataFolder(){
-//		File[] files = Config.getDataFolders();
-//		Assert.assertEquals(2, files.length);
-//	}
+	@Test
+	public void testGetMultiplePattern(){
+		String[] pattern = Config.getEntryPattern();
+		Assert.assertEquals(2, pattern.length);
+	}
 }

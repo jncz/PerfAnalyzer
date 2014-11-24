@@ -3,7 +3,6 @@ package com.test.instrument;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -17,30 +16,9 @@ import com.ibm.json.java.JSONObject;
 public class CSV2Json {
 
 	private static final String SPERATOR = "DataHead";
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
-		String d1 = "com.spss.test.Person.say, 1, 1506";
-		String d2 = "com.spss.test.Person.say|com.spss.test.Child.say, 2, 602,600,";
-		String d3 = "com.spss.test.Person.say|com.spss.test.Child.say|com.spss.test.Dog.say, 4, 200,200,200,200,";
-		String d4 = "com.spss.test.Person.say|com.spss.test.Dog.say, 1, 200,";
-		String d5 = "com.spss.test.Dog.say, 1, 200,";//check recursive
-		String d6 = "com.spss.test.Dog.say|com.spss.test.Person.say, 1, 200,";//check recursive
-		String d7 = "com.spss.test.Dog.say|com.spss.test.Person.say|com.spss.test.Dog.say, 1, 200,";//check recursive
-		
-		String[] data = new String[]{d5,d6,d7};
-		
-		JSONArray obj = CSV2Json.toJson(data);
-		
-		System.out.println(obj.serialize());
-		
-		File f = new File("D:\\Downloads\\InternalShare\\data\\g");
-		JSONArray arr = CSV2Json.toJson(f);
-		System.out.println(arr.toString());
-	}
-
+	private static final String SPERATOR_END = "DataEnd";
+	private static final String MAPPING_SPERATOR = "mapping";
+	
 	public static JSONArray toJson(File f){
 		try{
 			BufferedReader br = new BufferedReader(new FileReader(f));
@@ -48,10 +26,24 @@ public class CSV2Json {
 			List<List<String>> dss = new ArrayList<List<String>>();
 			List<String> ds = new ArrayList<String>();
 			String temp = null;
+			
+			Map<String,String> mapping = new HashMap<String,String>();
+			boolean inMappingSection = false;
+			boolean outMappingSection = false;
 			while((temp = br.readLine()) != null){
 				if(temp.equals(SPERATOR)){
 					ds = new ArrayList<String>();
 					dss.add(ds);
+				}
+				if(temp.equals(SPERATOR_END)){
+					outMappingSection = true;
+				}
+				if(inMappingSection && !outMappingSection){
+					String[] ss = temp.split("=");
+					mapping.put(ss[1], ss[0]);
+				}
+				if(temp.equals(MAPPING_SPERATOR)){
+					inMappingSection = true;
 				}
 				if(valid(temp)){
 					ds.add(temp);
@@ -61,7 +53,7 @@ public class CSV2Json {
 			for(List<String> s:dss){
 				String[] datas = s.toArray(new String[0]);
 				if(datas.length > 0){
-					JSONArray obj2 = CSV2Json.toJson(datas);
+					JSONArray obj2 = CSV2Json.toJson(datas,mapping);
 					arr.add(obj2);
 				}
 			}
@@ -123,7 +115,7 @@ public class CSV2Json {
 		return true;
 	}
 
-	private static JSONArray toJson(String[] data){
+	private static JSONArray toJson(String[] data, Map<String, String> mapping){
 		Map<String, JSONObject> map = new HashMap<String,JSONObject>();
 		JSONArray totalObjs = new JSONArray();
 		for(String d:data){
@@ -134,9 +126,10 @@ public class CSV2Json {
 			String key = tokens[0];//com.spss.test.Person.say or com.spss.test.Person.say|com.spss.test.Child.say
 			String[] tokens2 = key.split("\\|");//com.spss.test.Person.say
 			String lastToken = tokens2[tokens2.length-1];//com.spss.test.Person.say
-			int idx = lastToken.lastIndexOf(".");
-			String className = lastToken.substring(0, idx);
-			String methodName = lastToken.substring(idx+1);
+			String fullname = mapping.get(lastToken);
+			int idx = fullname.lastIndexOf(".");
+			String className = fullname.substring(0, idx);
+			String methodName = fullname.substring(idx+1);
 			
 			JSONObject obj = createObj(tokens,className,methodName);
 			map.put(key, obj);
@@ -148,7 +141,8 @@ public class CSV2Json {
 
 			String[] tokens = d.split(",");
 			String key = tokens[0];//com.spss.test.Person.say or com.spss.test.Person.say|com.spss.test.Child.say
-			if(key.indexOf("|") == -1){
+			if(key.indexOf("|") == key.lastIndexOf("|")){
+//				String fullname = mapping.get(key);
 				totalObjs.add(map.get(key));
 			}
 			String[] tokens2 = key.split("\\|");//com.spss.test.Person.say
@@ -179,7 +173,7 @@ public class CSV2Json {
 		for(int x=0;x<=i;x++){
 			s += tokens2[x]+"|";
 		}
-		s = s.substring(0, s.length()-1);
+		//s = s.substring(0, s.length()-1);
 		return s;
 	}
 

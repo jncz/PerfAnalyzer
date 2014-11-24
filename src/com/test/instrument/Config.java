@@ -23,6 +23,7 @@ public class Config {
 	private static final String KEY_SYSEXCLUDE = "sysexclude";
 	private static final String SPLIT_MARKER = ",";
 	private static final String KEY_DATA_FOLDER = "datafolder";
+	private static final String KEY_ENTRY_POINT_PATTERN = "entryPointPattern";
 	
 	private static boolean readed = false;
 	
@@ -88,13 +89,18 @@ public class Config {
 		String[] items = value.split(SPLIT_MARKER);
 		return Arrays.asList(items);
 	}
-	public static String getAEEntryPointPattern() {
+//	public static String getAEEntryPointPattern() {
+//		read();
+//		return Config.get(KEY_AE_ENTRY_POINT_PATTERN);
+//	}
+//
+//	public static String getCAEntryPointPattern() {
+//		read();
+//		return Config.get(KEY_CA_ENTRY_POINT_PATTERN);
+//	}
+	public static String[] getEntryPattern() {
 		read();
-		return Config.get(KEY_AE_ENTRY_POINT_PATTERN);
-	}
-
-	public static String getCAEntryPointPattern() {
-		read();
-		return Config.get(KEY_CA_ENTRY_POINT_PATTERN);
+		String patternStr = Config.get(KEY_ENTRY_POINT_PATTERN);
+		return patternStr.split(SPLIT_MARKER);
 	}
 }
