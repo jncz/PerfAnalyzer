@@ -252,7 +252,7 @@ define(["md/TreeNode"],function(TreeNode){
 							if(n.currentIdx){
 								for(var y=0;y<nodes.length;y++){
 									var n2 = nodes[y];
-									if(n2.currentIdx === n.currentIdx && n2 !== n){
+									if(n2.currentIdx === n.currentIdx && n2 !== n && n2.parent == n.parent){
 										n2.hide = true;
 										hideTree(n2);
 									}
