@@ -15,6 +15,8 @@ define(["md/TreeNode"],function(TreeNode){
 	var fcost;
 	var fcondition;
 	
+	var createTime;
+	
 	var nodes = [];
 	var createCanvas = function(pid){
 		var c = document.createElement("canvas");
@@ -185,12 +187,12 @@ define(["md/TreeNode"],function(TreeNode){
 			}
 		}
 	};
-	var paintCallTime = function(ctx,createTime){
+	var paintCallTime = function(){
 		ctx.fillText(new Date(createTime),10,10);
 	};
 	var paint = function(ctx,data){
-		var d = data[0];
-		paintCallTime(ctx,d.createdTime);
+		createTime = data[0].createdTime;
+		paintCallTime();
 		nodes = [];
 		indicator.reset();
 		p(indicator,data,null);
@@ -231,6 +233,7 @@ define(["md/TreeNode"],function(TreeNode){
 						hideTree(n);
 						ctx.save();
 						ctx.clearRect(0,0,cw,ch);
+						paintCallTime();
 						for(var x=0;x<=indicator.i;x++){
 							paintNodes(x);
 						}
@@ -260,6 +263,7 @@ define(["md/TreeNode"],function(TreeNode){
 							}
 							ctx.save();
 							ctx.clearRect(0,0,cw,ch);
+							paintCallTime();
 							for(var x=0;x<=indicator.i;x++){
 								paintNodes(x);
 							}
