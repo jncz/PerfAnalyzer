@@ -52,14 +52,21 @@ define(function(){
 		var times = data.length;
 		var t = 1;
 		var lastPoint = null;
+		var timestamp = document.body.getAttribute("ct");
 		for(var i=(times>50?(times-50):0);i<times;i++){
 			var cost = data[i].callMeanCost;
+			var createTime = data[i].createdDate;
 			var x = startPoint.x+t*statsData.xlen;
 			var y = maxY - ((cost-statsData.peak.min)/ds)*statsData.ylen;
 			var radius = 3;
 			ctx.beginPath();
+			ctx.save();
+			if(timestamp == createTime){
+				ctx.fillStyle = "#ff0000";
+			}
 			ctx.arc(x, y, radius, 0, 2*Math.PI, true);
 			ctx.fill();
+			ctx.restore();
 			if(lastPoint != null){
 				ctx.beginPath();
 				ctx.moveTo(lastPoint[0],lastPoint[1]);

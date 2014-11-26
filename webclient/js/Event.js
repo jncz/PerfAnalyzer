@@ -30,6 +30,11 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 			$("progressDialog").close();
 			tree.data = obj.data[0];
 			tree.repaint();
+			
+			if(statsDialog.opened){
+				statsDialog.close();
+				statsDialog.open();
+			}
 		},function(){
 			$("progressDialog").close();
 		});
