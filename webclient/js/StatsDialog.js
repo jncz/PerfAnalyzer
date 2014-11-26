@@ -7,7 +7,7 @@ define(["md/ajax","md/TrendChart"],function(ajax,TrendChart){
 	var paint = function(){
 		//dia.style.width = "1000px";
 		//dia.style.height = "800px";
-		var exename = document.body.getAttribute("d");;
+		var exename = document.body.getAttribute("d");
 		var p = new Promise(function(resolve,reject){
 			ajax.openURL("calltree/stats/"+exename,function(http){
 				var jsonText = http.responseText;

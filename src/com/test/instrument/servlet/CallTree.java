@@ -2,9 +2,7 @@ package com.test.instrument.servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,14 +15,15 @@ public class CallTree extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Map<String,Action> route = new HashMap<String,Action>();
-	static{
-		route.put("/calltree", new ListNamesAction());
-		route.put("/calltree/?", new StatsAction());
-		route.put("/calltree/archive", new ArchiveAction());
-		route.put("/calltree/archive/rebuild", new RebuildAction());
-		route.put("/calltree/stats/?", new LongStatsAction());
-	}
+//	private static final Map<String,Action> route = new HashMap<String,Action>();
+//	static{
+//		route.put("/calltree", new ListNamesAction());
+//		route.put("/calltree/?", new StatsAction());
+//		route.put("/calltree/?/?/?", new StatsAction());//calltree/executorName/timestamp/(n/p) used for getting the next or previous executorName details
+//		route.put("/calltree/archive", new ArchiveAction());
+//		route.put("/calltree/archive/rebuild", new RebuildAction());
+//		route.put("/calltree/stats/?", new LongStatsAction());
+//	}
 	
 	private static final Action nullAction = new NullAction();
 
@@ -75,6 +74,8 @@ public class CallTree extends HttpServlet {
 					}
 				}
 				break;
+			case 3:
+				return new ConditionStatsAction();
 		}
 		return nullAction;
 	}

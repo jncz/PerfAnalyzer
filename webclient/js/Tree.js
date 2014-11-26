@@ -192,6 +192,7 @@ define(["md/TreeNode"],function(TreeNode){
 	};
 	var paint = function(ctx,data){
 		createTime = data[0].createdTime;
+		document.body.setAttribute("ct",createTime);
 		paintCallTime();
 		nodes = [];
 		indicator.reset();

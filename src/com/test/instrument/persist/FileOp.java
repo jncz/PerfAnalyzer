@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +21,7 @@ import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
 import com.test.instrument.CSV2Json;
 import com.test.instrument.servlet.AppConfig;
+import com.test.instrument.servlet.Constants;
 import com.test.instrument.util.Util;
 
 public class FileOp {
@@ -302,5 +305,76 @@ public class FileOp {
 			Util.close(fr);
 		}
 		return new JSONArray();
+	}
+
+	public static JSONObject getStatsData(String executor, final long timestamp,
+			final String direction) {
+		JSONObject obj = new JSONObject();
+		JSONArray arr = new JSONArray();
+		File f = new File(AppConfig.getDataFolder(),executor);
+		if(f.exists()){
+			File[] fs = f.listFiles(new FileFilter(){
+
+				@Override
+				public boolean accept(File pathname) {
+					long l1 = pathname.lastModified();
+					
+					Time t1 = new Time(l1);
+					Time t2 = new Time(timestamp);
+					
+					boolean c1 = !pathname.getName().endsWith(SUFFIX_JSON);
+					
+					if(goNext(direction)){
+						return c1 && t1.after(t2);
+					}else if(goPrevious(direction)){
+						return c1 && t1.before(t2);
+					}
+					return c1;
+				}
+				
+			});
+			
+			Arrays.sort(fs, new Comparator<File>(){
+
+				@Override
+				public int compare(File f1, File f2) {
+					Time t1 = new Time(f1.lastModified());
+					Time t2 = new Time(f2.lastModified());
+					return t1.compareTo(t2);
+				}});
+
+			File foundFile = null;
+			if(fs.length > 0){
+				if(goNext(direction)){
+					foundFile = fs[0];
+				}else if(goPrevious(direction)){
+					foundFile = fs[fs.length - 1];
+				}
+			}
+			File jsonFile = new File(foundFile.getParentFile(),foundFile.getName()+SUFFIX_JSON);
+			if(jsonFile.exists()){
+				try {
+					arr = JSONArray.parse(new FileReader(jsonFile));
+					appendTime(arr, jsonFile);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else{
+				arr = CSV2Json.toJson(foundFile);
+				appendTime(arr, foundFile);
+			}
+		}
+		obj.put("data", arr);
+		return obj;
+	}
+
+	protected static boolean goPrevious(String direction) {
+		return Constants.DIR_P.equalsIgnoreCase(direction);
+	}
+
+	protected static boolean goNext(String direction) {
+		return Constants.DIR_N.equalsIgnoreCase(direction);
 	}
 }

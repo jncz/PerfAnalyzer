@@ -4,12 +4,35 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 	var keycode_f = 70;
 	var keycode_a = 65;
 	var keycode_s = 83;
+	var keycode_n = 78;
+	var keycode_p = 80;
 	var dialogOpen = function(id){
 		var ele = $(id);
 		ele.classList.toggle("hide");
 		a.detachFilterEvent();
 		
 		ele.showModal();
+	};
+	var getStatsData = function(tree,direction){
+		var p = new Promise(function(resolve,reject){
+			var exename = document.body.getAttribute("d");
+			var timestamp = document.body.getAttribute("ct");
+			ajax.openURL("calltree/"+exename+"/"+timestamp+"/"+direction,function(http){
+				var jsonText = http.responseText;
+				var obj = JSON.parse(jsonText);
+				resolve(obj);
+			},function(){
+				reject(-1);
+			},{"Accecpt":"application/json","Content-Type":"application/json"},"GET",null,true);
+		});
+		$("progressDialog").showModal();
+		p.then(function(obj){
+			$("progressDialog").close();
+			tree.data = obj.data[0];
+			tree.repaint();
+		},function(){
+			$("progressDialog").close();
+		});
 	};
 	var a = {
 		tree : null,
@@ -30,6 +53,12 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 				}else{
 					statsDialog.open();
 				}
+			}
+			if(e.keyCode == keycode_n){
+				getStatsData(a.tree,"n");
+			}
+			if(e.keyCode == keycode_p){
+				getStatsData(a.tree,"p");
 			}
 		},
 		attachFilterEvent : function(){
