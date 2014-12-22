@@ -62,6 +62,8 @@ public class CallTree extends HttpServlet {
 			case 1:
 				if(parts[0].equalsIgnoreCase("archive")){
 					return new ArchiveAction();
+				}else if(parts[0].equalsIgnoreCase("summary")){
+					return new ListAllSummaryAction();
 				}else{
 					return new StatsAction();
 				}

@@ -77,7 +77,7 @@
       <manifest>
         <attribute name="Manifest-Version" value="1.0"/>
         <attribute name="Premain-Class" value="com.test.instrument.PerfMonAgent"/>
-        <attribute name="Boot-Class-Path" value="H:/javassist.jar"/>
+        <attribute name="Boot-Class-Path" value="/mnt/disk1/software/agentconfig/javassist.jar"/>
       	
       	<!--
         <attribute name="Boot-Class-Path" value="D:/Downloads/InternalShare/javassist.jar"/>

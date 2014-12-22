@@ -145,6 +145,22 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 					$("progressDialog").close();
 				});
 			});
+		},
+		attachFilterListBtnEvent:function(){
+			var btn = $("costFilterBtn");
+			btn.addEventListener("click",function(){
+				var costvalue = $("costNum").value;
+				var eles = document.getElementById("caseDialog").querySelectorAll("div[d^='com']");
+				var len = eles.length;
+				for(var i=0;i<len;i++){
+					var spans = eles[i].querySelectorAll("span");
+					if(spans[0].getAttribute("avg")*1 > 1*costvalue || spans[1].getAttribute("cost")*1 > 1*costvalue){
+						eles[i].classList.add("emphasize");
+					}else{
+						eles[i].classList.remove("emphasize");
+					}
+				}
+			});
 		}
 	};
 

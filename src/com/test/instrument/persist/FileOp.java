@@ -42,6 +42,57 @@ public class FileOp {
 		return obj;
 	}
 	
+	/**
+	 * return every entry latest cost and avg cost.
+	 * @return
+	 */
+	public static JSONObject listAllSummary(){
+		JSONObject obj = new JSONObject();
+		File f = AppConfig.getDataFolder();
+		if(f.exists()){			
+			File[] files = f.listFiles();
+			for(File file:files){
+				File statsFile = new File(file,STATS_FILE);
+				String avgcost = "0";
+				if(statsFile.exists()){
+					FileReader fr = null;
+					try {
+						fr = new FileReader(statsFile);
+						JSONArray arr = JSONArray.parse(fr);
+						Iterator it = arr.iterator();
+						int d = 0;
+						int i = 0;
+						while(it.hasNext()){
+							JSONObject statsData = (JSONObject) it.next();
+							String cost = (String) statsData.get("callMeanCost");
+							d += Integer.parseInt(cost);
+							i++;
+						}
+						avgcost = ""+((i!=0)?(d/i):0);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally{
+						Util.close(fr);
+					}
+				}
+				
+				JSONObject item1 = getStatsData(file.getName());
+				JSONArray item2 = (JSONArray) item1.get("data");
+				JSONArray item3 = (JSONArray) item2.get(0);
+				JSONObject item4 = (JSONObject) item3.get(0);
+				String cost = (String) item4.get("callMeanCost");
+
+				String[] costs = new String[]{avgcost,cost};
+				JSONArray arr = new JSONArray();
+				arr.add(costs[0]);
+				arr.add(costs[1]);
+				obj.put(file.getName(), arr);
+			}
+		}
+		return obj;
+	}
 	public static JSONObject getStatsData(String opv){
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
@@ -60,8 +111,8 @@ public class FileOp {
 				if(latestFile == null){
 					latestFile = file;
 				}else{
-					long l1 = file.lastModified();
-					long l2 = latestFile.lastModified();
+					long l1 = getFileLastModified(file);
+					long l2 = getFileLastModified(latestFile);
 					
 					Time t1 = new Time(l1);
 					Time t2 = new Time(l2);
@@ -89,6 +140,22 @@ public class FileOp {
 		return obj;
 	}
 
+	/**
+	 * @param file
+	 * @return
+	 */
+	private static long getFileLastModified(File file) {
+		String name = file.getName();
+		if(name.endsWith(SUFFIX_JSON)){
+			try{
+				return Long.parseLong(name.substring(0,name.length()-SUFFIX_JSON.length()));
+			}catch(Exception e){
+				return file.lastModified();
+			}
+		}
+		return Long.parseLong(name);
+	}
+
 	private static void appendTime(JSONArray arr, File jsonFile) {
 		Iterator it = arr.iterator();
 		while(it.hasNext()){
@@ -96,7 +163,7 @@ public class FileOp {
 			Iterator it2 = arr2.iterator();
 			while(it2.hasNext()){
 				JSONObject obj2 = (JSONObject) it2.next();
-				obj2.put("createdTime", jsonFile.lastModified());
+				obj2.put("createdTime", getFileLastModified(jsonFile));
 			}
 		}
 	}
@@ -140,7 +207,7 @@ public class FileOp {
 
 	private static void archiveFile(Map<String, JSONArray> statsMap, File f) {
 		JSONArray arr = CSV2Json.toJson(f);
-		JSONObject statsObj = addToStats(arr,f.lastModified());
+		JSONObject statsObj = addToStats(arr,Long.parseLong(f.getName()));
 		
 		String key = f.getParentFile().getName();
 		JSONArray stats = statsMap.get(key);
@@ -161,7 +228,7 @@ public class FileOp {
 			throw new RuntimeException(e);
 		} finally{
 			Util.close(fw);
-			newfile.setLastModified(f.lastModified());
+			newfile.setLastModified(getFileLastModified(f));
 		}
 	}
 	
@@ -317,7 +384,7 @@ public class FileOp {
 
 				@Override
 				public boolean accept(File pathname) {
-					long l1 = pathname.lastModified();
+					long l1 = getFileLastModified(pathname);
 					
 					Time t1 = new Time(l1);
 					Time t2 = new Time(timestamp);
@@ -338,8 +405,8 @@ public class FileOp {
 
 				@Override
 				public int compare(File f1, File f2) {
-					Time t1 = new Time(f1.lastModified());
-					Time t2 = new Time(f2.lastModified());
+					Time t1 = new Time(getFileLastModified(f1));
+					Time t2 = new Time(getFileLastModified(f2));
 					return t1.compareTo(t2);
 				}});
 
