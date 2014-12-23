@@ -11,7 +11,7 @@ import com.test.instrument.servlet.Constants;
  * @author pli
  *
  */
-public class ConditionStatsAction implements Action {
+public class ConditionStatsAction extends BaseAction implements Action {
 
 	@Override
 	public String execute(String[] params) {
@@ -42,12 +42,4 @@ public class ConditionStatsAction implements Action {
 		}
 		return true;
 	}
-
-	private String error() {
-		JSONObject obj = new JSONObject();
-		obj.put("error", "not matched");
-		return obj.toString();
-	}
-
-	
 }

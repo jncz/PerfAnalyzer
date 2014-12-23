@@ -2,10 +2,14 @@ package com.test.instrument.persist;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +31,7 @@ import com.test.instrument.util.Util;
 public class FileOp {
 	private static final String SUFFIX_JSON = ".json";
 	private static final String STATS_FILE = "stats.json";
+	private static final String FOLDER_BACKUP = "backup";
 
 	public static JSONObject listFileNames(){
 		JSONObject obj = new JSONObject();
@@ -443,5 +448,114 @@ public class FileOp {
 
 	protected static boolean goNext(String direction) {
 		return Constants.DIR_N.equalsIgnoreCase(direction);
+	}
+
+	/**
+	 * @param executor
+	 * @param parseLong
+	 * @return
+	 */
+	public static JSONObject delData(String executor, final long timestamp) {
+		moveToBackup(executor,timestamp);
+		JSONObject data = getStatsData(executor,timestamp,Constants.DIR_P);
+		if(data == null){
+			data = getStatsData(executor,timestamp,Constants.DIR_N);
+		}
+		return data;
+	}
+
+	/**
+	 * @param executor
+	 * @param timestamp
+	 */
+	private static void moveToBackup(String executor, long timestamp) {
+		File backup = new File(AppConfig.getDataFolder().getParentFile(),FOLDER_BACKUP);
+		File targetFolder = new File(backup,executor);
+		createIfAbsent(backup);
+		createIfAbsent(targetFolder);
+		
+		File datafileFolder = new File(AppConfig.getDataFolder(),executor);
+		File datafile = new File(datafileFolder,""+timestamp);
+		File datafileJson = new File(datafileFolder,timestamp+SUFFIX_JSON);
+		moveTo(datafile,targetFolder);
+		moveTo(datafileJson,targetFolder);
+		refreshStats(datafileFolder,executor,timestamp);
+	}
+
+	/**
+	 * @param datafileFolder 
+	 * @param timestamp 
+	 * @param executor 
+	 * 
+	 */
+	private static void refreshStats(File datafileFolder, String executor, long timestamp) {
+		File statsFile = new File(datafileFolder,STATS_FILE);
+		if(statsFile.exists()){
+			FileReader fr = null;
+			OutputStream os = null;
+			try {
+				fr = new FileReader(statsFile);
+				JSONArray arr = JSONArray.parse(fr);
+				int len = arr.size();
+				JSONObject toBeDeleted = null;
+				for(int i=0;i<len;i++){
+					JSONObject obj = (JSONObject) arr.get(i);
+					if(((Long)obj.get("createdDate")).longValue() == timestamp){
+						toBeDeleted = obj;
+						break;
+					}
+				}
+				arr.remove(toBeDeleted);
+				os = new FileOutputStream(statsFile);
+				arr.serialize(os);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally{
+				Util.close(fr);
+				Util.close(os);
+			}
+		}
+	}
+
+	/**
+	 * @param datafile
+	 * @param targetFolder
+	 */
+	private static void moveTo(File datafile, File targetFolder) {
+		if(datafile.exists()){
+			File targetFile = new File(targetFolder,datafile.getName());
+			InputStream is = null;
+			OutputStream os = null;
+			try {
+				targetFile.createNewFile();
+				os = new FileOutputStream(targetFile);
+				is = new FileInputStream(datafile);
+				byte[] bs = new byte[2048];
+				int idx = -1;
+				while((idx = is.read(bs)) != -1){
+					os.write(bs, 0, idx);
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally{
+				Util.close(os);
+				Util.close(is);
+				datafile.delete();
+			}
+		}
+		
+	}
+
+	/**
+	 * @param backup
+	 */
+	private static void createIfAbsent(File backup) {
+		if(!backup.exists()){
+			backup.mkdirs();
+		}
 	}
 }

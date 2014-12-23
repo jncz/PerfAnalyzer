@@ -29,6 +29,7 @@
 			 }); 
 		
 		require(["md/ajax","md/Tree","md/Event","md/Dialog"],function(ajax,Tree,event,Dialog){
+			event.attachGlobalEvent();
 			ajax.openURL("calltree",function(h){
 				var t = h.responseText;
 				var obj = JSON.parse(t);
@@ -74,6 +75,10 @@
 		</dialog>
 		<dialog id="statsDialog" class="hide">
 			<h3>运行历史统计：</h3>
+		</dialog>
+		<dialog id="delConfirmDialog" class="hide">
+			<h3>Confirm：Do you want to delete the record???</h3>
+			<button id="delRecordBtn">Delete</button>
 		</dialog>
 	</body>
 </html>

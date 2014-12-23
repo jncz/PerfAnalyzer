@@ -26,6 +26,7 @@ public class CallTree extends HttpServlet {
 //	}
 	
 	private static final Action nullAction = new NullAction();
+	private static final String HTTP_METHOD_DELETE = "delete";
 
 	private String[] getPathParam(HttpServletRequest req) {
 		List<String> partList = new ArrayList<String>();
@@ -49,13 +50,13 @@ public class CallTree extends HttpServlet {
 			throws ServletException, IOException {
 		String[] params = getPathParam(req);
 		
-		String result = call(match(req.getServletPath(),params),params);
+		String result = call(match(req.getServletPath(),params,req.getMethod()),params);
 		resp.setContentType(CONTENT_TYPE_JSON);
 		resp.getWriter().write(result);
 		resp.getWriter().flush();
 	}
 
-	private Action match(String path,String[] parts) {
+	private Action match(String path,String[] parts, String method) {
 		switch(parts.length){
 			case 0:
 				return new ListNamesAction();
@@ -70,12 +71,14 @@ public class CallTree extends HttpServlet {
 			case 2:
 				if(parts[0].equalsIgnoreCase("archive") && parts[1].equalsIgnoreCase("rebuild")){
 					return new RebuildAction();
+				}else if(parts[0].equalsIgnoreCase("stats")){
+					return new LongStatsAction();
 				}else{
-					if(parts[0].equalsIgnoreCase("stats")){
-						return new LongStatsAction();
-					}
+//					if(method.equalsIgnoreCase(HTTP_METHOD_DELETE)){
+						return new DeleteRecordAction();
+//					}
 				}
-				break;
+//				break;
 			case 3:
 				return new ConditionStatsAction();
 		}

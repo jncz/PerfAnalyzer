@@ -6,6 +6,8 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 	var keycode_s = 83;
 	var keycode_n = 78;
 	var keycode_p = 80;
+    var keycode_d = 68;
+
 	var dialogOpen = function(id){
 		var ele = $(id);
 		ele.classList.toggle("hide");
@@ -64,6 +66,14 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 			}
 			if(e.keyCode == keycode_p){
 				getStatsData(a.tree,"p");
+			}
+			if(e.keyCode == keycode_d){
+				var delConfirmDialog = $("delConfirmDialog");
+				if(delConfirmDialog.opened){
+					delConfirmDialog.close();
+				}else{
+					delConfirmDialog.showModal();
+				}
 			}
 		},
 		attachFilterEvent : function(){
@@ -160,6 +170,38 @@ define(["md/ajax","md/StatsDialog"],function(ajax,statsDialog){
 						eles[i].classList.remove("emphasize");
 					}
 				}
+			});
+		},
+		attachGlobalEvent:function(){
+			var btn = $("delRecordBtn");
+			var that = this;
+			btn.addEventListener("click",function(){
+				var p = new Promise(function(resolve,reject){
+					var exename = document.body.getAttribute("d");
+					var timestamp = document.body.getAttribute("ct");
+					ajax.openURL("calltree/"+exename+"/"+timestamp,function(http){
+						var jsonText = http.responseText;
+						var obj = JSON.parse(jsonText);
+						resolve(obj);
+					},function(){
+						reject(-1);
+					},{"Accecpt":"application/json","Content-Type":"application/json"},"GET",null,true);
+				});
+				$("progressDialog").showModal();
+				p.then(function(obj){
+					$("progressDialog").close();
+					that.tree.data = obj.data[0];
+					that.tree.repaint();
+			
+					if(statsDialog.opened){
+						statsDialog.close();
+						statsDialog.open();
+					}
+					$("delConfirmDialog").close();
+				},function(){
+					$("progressDialog").close();
+					$("delConfirmDialog").close();
+				});
 			});
 		}
 	};
