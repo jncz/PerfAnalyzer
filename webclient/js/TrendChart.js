@@ -45,7 +45,7 @@ define(function(){
 			ctx.lineTo(startPoint.x+sdy,startPoint.y-chartData.ysplit[i].pos);
 			ctx.stroke();
 			
-			ctx.strokeText((chartData.peak.min + i*ds),startPoint.x-30,startPoint.y-chartData.ysplit[i].pos);
+			ctx.strokeText(Math.ceil((chartData.peak.min + i*ds)),startPoint.x-30,startPoint.y-chartData.ysplit[i].pos);
 		}
 	};
 	var paintPoint = function(ctx,statsData,data){
@@ -100,6 +100,9 @@ define(function(){
 			ysize = 50;
 			ds = Math.ceil((peak.max - peak.min)/maxYSplit);//获取每间隔长度
 			dy = maxY/maxYSplit;
+		}else{
+			dy = Math.ceil((peak.max - peak.min)/ysize)*((maxY-peak.min)/(peak.max-peak.min));
+			ds = dy;
 		}
 		
 				

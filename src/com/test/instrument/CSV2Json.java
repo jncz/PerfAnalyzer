@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.ibm.json.java.JSONArray;
 import com.ibm.json.java.JSONObject;
+import com.test.instrument.util.Util;
 
 public class CSV2Json {
 
@@ -20,8 +21,11 @@ public class CSV2Json {
 	private static final String MAPPING_SPERATOR = "mapping";
 	
 	public static JSONArray toJson(File f){
+		FileReader fr = null;
+		BufferedReader br = null;
 		try{
-			BufferedReader br = new BufferedReader(new FileReader(f));
+			fr = new FileReader(f);
+			br = new BufferedReader(fr);
 			
 			List<List<String>> dss = new ArrayList<List<String>>();
 			List<String> ds = new ArrayList<String>();
@@ -58,9 +62,12 @@ public class CSV2Json {
 				}
 			}
 			return arr;
-		}catch(Exception e){
+		} catch(Exception e){
 			e.printStackTrace();
 			return null;
+		} finally{
+			Util.close(fr);
+			Util.close(br);
 		}
 	}
 	private static void toMD5(String[] datas) {

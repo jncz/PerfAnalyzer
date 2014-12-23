@@ -2,13 +2,11 @@ package com.test.instrument.persist;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -128,13 +126,17 @@ public class FileOp {
 			}
 			File jsonFile = new File(latestFile.getParentFile(),latestFile.getName()+SUFFIX_JSON);
 			if(jsonFile.exists()){
+				FileReader fr = null;
 				try {
-					arr = JSONArray.parse(new FileReader(jsonFile));
+					fr = new FileReader(jsonFile);
+					arr = JSONArray.parse(fr);
 					appendTime(arr, jsonFile);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
+				} finally{
+					Util.close(fr);
 				}
 			}else{
 				arr = CSV2Json.toJson(latestFile);
@@ -425,13 +427,17 @@ public class FileOp {
 			}
 			File jsonFile = new File(foundFile.getParentFile(),foundFile.getName()+SUFFIX_JSON);
 			if(jsonFile.exists()){
+				FileReader fr = null;
 				try {
-					arr = JSONArray.parse(new FileReader(jsonFile));
+					fr = new FileReader(jsonFile);
+					arr = JSONArray.parse(fr);
 					appendTime(arr, jsonFile);
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
+				} finally{
+					Util.close(fr);
 				}
 			}else{
 				arr = CSV2Json.toJson(foundFile);
@@ -457,7 +463,12 @@ public class FileOp {
 	 */
 	public static JSONObject delData(String executor, final long timestamp) {
 		moveToBackup(executor,timestamp);
-		JSONObject data = getStatsData(executor,timestamp,Constants.DIR_P);
+		JSONObject data = null;
+		try{
+			data = getStatsData(executor,timestamp,Constants.DIR_P);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		if(data == null){
 			data = getStatsData(executor,timestamp,Constants.DIR_N);
 		}
@@ -526,26 +537,39 @@ public class FileOp {
 	private static void moveTo(File datafile, File targetFolder) {
 		if(datafile.exists()){
 			File targetFile = new File(targetFolder,datafile.getName());
-			InputStream is = null;
-			OutputStream os = null;
 			try {
 				targetFile.createNewFile();
-				os = new FileOutputStream(targetFile);
-				is = new FileInputStream(datafile);
-				byte[] bs = new byte[2048];
-				int idx = -1;
-				while((idx = is.read(bs)) != -1){
-					os.write(bs, 0, idx);
-				}
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
-			} finally{
-				Util.close(os);
-				Util.close(is);
-				datafile.delete();
 			}
+			datafile.renameTo(targetFile);
+//			InputStream is = null;
+//			OutputStream os = null;
+//			try {
+//				os = new FileOutputStream(targetFile);
+//				is = new FileInputStream(datafile);
+//				byte[] bs = new byte[2048];
+//				int idx = -1;
+//				while((idx = is.read(bs)) != -1){
+//					os.write(bs, 0, idx);
+//				}
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			} finally{
+//				Util.close(os);
+//				Util.close(is);
+//				try {
+//					Thread.sleep(100);
+//					boolean del = datafile.delete();
+//					if(!del){
+//						datafile.delete();
+//					}
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			}
 		}
 		
 	}
