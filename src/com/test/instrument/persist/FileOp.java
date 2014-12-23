@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -30,6 +31,7 @@ public class FileOp {
 	private static final String SUFFIX_JSON = ".json";
 	private static final String STATS_FILE = "stats.json";
 	private static final String FOLDER_BACKUP = "backup";
+	private static final int RECORDS_MAX_NUM = 50;
 
 	public static JSONObject listFileNames(){
 		JSONObject obj = new JSONObject();
@@ -325,43 +327,44 @@ public class FileOp {
 		}
 	}
 	
-	public static String process(List parts){
-		String result = null;
-		int len = parts.size();
-		switch(len){
-			case 1:
-				JSONObject arr = FileOp.listFileNames();
-				result = arr.toString();
-				break;
-			case 2:
-				String v = (String) parts.get(1);
-				if("archive".equalsIgnoreCase(v)){
-					FileOp.archive(false);
-					JSONObject obj = new JSONObject();
-					obj.put("ok", 200);
-					result = obj.toString();
-				}else{
-					result = FileOp.getStatsData(v).toString();
-				}
-				break;
-			case 3:
-				String v1 = (String) parts.get(1);
-				String v2 = (String) parts.get(2);
-				if("archive".equalsIgnoreCase(v1) && "rebuild".equalsIgnoreCase(v2)){
-					FileOp.archive(true);
-					JSONObject obj = new JSONObject();
-					obj.put("ok", 200);
-					result = obj.toString();
-				}else if("stats".equalsIgnoreCase(v1)){
-					JSONArray stats = FileOp.getLongTermStats(v2);
-					result = stats.toString();
-				}
-				break;
-		}
-		return result;
-	}
+//	public static String process(List parts){
+//		String result = null;
+//		int len = parts.size();
+//		switch(len){
+//			case 1:
+//				JSONObject arr = FileOp.listFileNames();
+//				result = arr.toString();
+//				break;
+//			case 2:
+//				String v = (String) parts.get(1);
+//				if("archive".equalsIgnoreCase(v)){
+//					FileOp.archive(false);
+//					JSONObject obj = new JSONObject();
+//					obj.put("ok", 200);
+//					result = obj.toString();
+//				}else{
+//					result = FileOp.getStatsData(v).toString();
+//				}
+//				break;
+//			case 3:
+//				String v1 = (String) parts.get(1);
+//				String v2 = (String) parts.get(2);
+//				if("archive".equalsIgnoreCase(v1) && "rebuild".equalsIgnoreCase(v2)){
+//					FileOp.archive(true);
+//					JSONObject obj = new JSONObject();
+//					obj.put("ok", 200);
+//					result = obj.toString();
+//				}else if("stats".equalsIgnoreCase(v1)){
+//					JSONArray stats = FileOp.getLongTermStats(v2);
+//					result = stats.toString();
+//				}
+//				break;
+//		}
+//		return result;
+//	}
 
-	public static JSONArray getLongTermStats(String foldername) {
+	@SuppressWarnings("unchecked")
+	public static JSONArray getLongTermStats(String foldername,long timestamp) {
 		File caf = AppConfig.getDataFolder();
 		File parent = caf;
 		File root = new File(parent,foldername);
@@ -370,6 +373,42 @@ public class FileOp {
 		try {
 			fr = new FileReader(f);
 			JSONArray arr = JSONArray.parse(fr);
+			JSONObject[] list = (JSONObject[]) arr.toArray(new JSONObject[0]);
+			Arrays.sort(list,new Comparator<JSONObject>(){
+				
+				@Override
+				public int compare(JSONObject obj1, JSONObject obj2) {
+					Long l1 = (Long) obj1.get("createdDate");
+					Long l2 = (Long) obj2.get("createdDate");
+					Time t1 = new Time(l1);
+					Time t2 = new Time(l2);
+					return t1.compareTo(t2);
+				}});
+			int len = arr.size();
+			if(validTS(timestamp) && len > RECORDS_MAX_NUM){
+				int idx_start = 0;
+				int idx_end = 0;
+				JSONArray objs = new JSONArray();
+				for(int i=0;i<len;i++){
+					JSONObject obj = (JSONObject) list[i];
+					Long createdDate = (Long) obj.get("createdDate");
+					Time t1 = new Time(createdDate);
+					Time t2 = new Time(timestamp);
+					if(t1.compareTo(t2) == 0){
+						if(i > RECORDS_MAX_NUM){
+							idx_start = i - RECORDS_MAX_NUM+1;
+							idx_end   = i+1;
+						}else{
+							idx_start = 0;
+							idx_end = RECORDS_MAX_NUM;
+						}
+						for(int j=idx_start;j<idx_end;j++){
+							objs.add((JSONObject) list[j]);
+						}
+						return objs;
+					}
+				}
+			}
 			return arr;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -379,6 +418,20 @@ public class FileOp {
 			Util.close(fr);
 		}
 		return new JSONArray();
+	}
+
+	/**
+	 * @param timestamp
+	 * @return
+	 */
+	private static boolean validTS(long timestamp) {
+		try{
+			Time t = new Time(timestamp);
+			return true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public static JSONObject getStatsData(String executor, final long timestamp,

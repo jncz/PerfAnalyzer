@@ -8,8 +8,9 @@ define(["md/ajax","md/TrendChart"],function(ajax,TrendChart){
 		//dia.style.width = "1000px";
 		//dia.style.height = "800px";
 		var exename = document.body.getAttribute("d");
+		var timestamp = document.body.getAttribute("ct");
 		var p = new Promise(function(resolve,reject){
-			ajax.openURL("calltree/stats/"+exename,function(http){
+			ajax.openURL("calltree/stats/"+exename+"/"+timestamp,function(http){
 				var jsonText = http.responseText;
 				var obj = JSON.parse(jsonText);
 				resolve(obj);

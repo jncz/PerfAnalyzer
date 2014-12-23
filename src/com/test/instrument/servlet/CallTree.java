@@ -71,8 +71,6 @@ public class CallTree extends HttpServlet {
 			case 2:
 				if(parts[0].equalsIgnoreCase("archive") && parts[1].equalsIgnoreCase("rebuild")){
 					return new RebuildAction();
-				}else if(parts[0].equalsIgnoreCase("stats")){
-					return new LongStatsAction();
 				}else{
 //					if(method.equalsIgnoreCase(HTTP_METHOD_DELETE)){
 						return new DeleteRecordAction();
@@ -80,6 +78,9 @@ public class CallTree extends HttpServlet {
 				}
 //				break;
 			case 3:
+				if(parts[0].equalsIgnoreCase("stats")){
+					return new LongStatsAction();
+				}
 				return new ConditionStatsAction();
 		}
 		return nullAction;

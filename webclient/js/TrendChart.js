@@ -1,5 +1,5 @@
 define(function(){
-	var cw = 1000;
+	var cw = 1800;
 	var ch = 800;
 	
 	var startPoint = {x:45,y:ch-15};
@@ -92,7 +92,7 @@ define(function(){
 	var genChartData = function(statsData){
 		ds = 10;//10ms每10ms一个间隔
 		var peak = getPeek(statsData);
-		var xsize = statsData.length+1;
+		var xsize = statsData.length+5;
 		var ysize = (peak.max - peak.min)/ds+1;
 		
 		var dy = 0;
@@ -106,7 +106,7 @@ define(function(){
 		}
 		
 				
-		xsize = xsize > 50?50:xsize;//最大50个间隔
+		xsize = xsize > 55?55:xsize;//最大50个间隔
 		
 		var dx = maxX/xsize;//x方向单位间隔长度
 		
