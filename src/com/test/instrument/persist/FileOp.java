@@ -216,6 +216,9 @@ public class FileOp {
 
 	private static void archiveFile(Map<String, JSONArray> statsMap, File f) {
 		JSONArray arr = CSV2Json.toJson(f);
+		if(arr == null){
+			return;
+		}
 		JSONObject statsObj = addToStats(arr,Long.parseLong(f.getName()));
 		
 		String key = f.getParentFile().getName();

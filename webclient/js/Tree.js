@@ -8,7 +8,7 @@ define(["md/TreeNode"],function(TreeNode){
 	var rh = 40;//rectangle height
 	
 	var minXgap = 20;
-	var minYgap = 40;
+	var minYgap = 20;
 	
 	var ctx;
 	var ftimes;

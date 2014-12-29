@@ -47,7 +47,7 @@ public class CallTreePerfMonXformer implements ClassFileTransformer {
 		try {
 			cl = pool.makeClass(new ByteArrayInputStream(classfileBuffer));
 			String className  = cl.getName();
-			if(filter.filterOut(className) || cl.isInterface() || cl.isEnum()){
+			if(filter.filterOut(className) || cl.isInterface()){
 				return null;
 			}
 //			Log.info("Class2:"+className);
