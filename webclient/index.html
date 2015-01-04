@@ -46,35 +46,35 @@
 			
 		</div>
 		<dialog id="filterDialog" class="hide">
-			<h3 tabIndex="1">过滤条件：</h3>
+			<h3 tabIndex="1">Filter Condition：</h3>
 			<div>
-				<span>调用次数 > </span><input id="times" type="number" value="5"/> 
+				<span>Call times > </span><input id="times" type="number" value="5"/> 
 			</div>
 			<div>
 				<span>And/Or</span><input id="and" name="andor" type="radio" checked value="and"/> <input id="or" name="andor" type="radio" value="or"/> 
 			</div>
 			<div>
-				<span>平均耗时 > </span><input id="cost" type="number" step="10" value="250"/><span>ms</span> 
+				<span>AVG cost > </span><input id="cost" type="number" step="10" value="250"/><span>ms</span> 
 			</div>
 			<div>
-				<button id="filterBtn">过滤</button>
-				<button id="clostBtn">关闭</button>
-				<button id="resetBtn">清除</button>
+				<button id="filterBtn">filter</button>
+				<button id="clostBtn">close</button>
+				<button id="resetBtn">clear</button>
 			</div>
 		</dialog>
 		<dialog id="caseDialog" class="hide">
 			<div>
-				<button id="archiveBtn">压缩统计数据</button>
-				<button id="reArchiveBtn">全新压缩统计数据</button>
+				<button id="archiveBtn">stats data</button>
+				<button id="reArchiveBtn">re-stats data</button>
 				<input type="number" id="costNum"><button id="costFilterBtn">Filter</button>
 			</div>
-			<h3>选择要查看的REST入口：</h3>
+			<h3>Select the REST entrance：</h3>
 		</dialog>
 		<dialog id="progressDialog" class="hide">
 			<h3>Running......</h3>
 		</dialog>
 		<dialog id="statsDialog" class="hide">
-			<h3>运行历史统计：</h3>
+			<h3>Historical running data：</h3>
 		</dialog>
 		<dialog id="delConfirmDialog" class="hide">
 			<h3>Confirm：Do you want to delete the record???</h3>
