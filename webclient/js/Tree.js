@@ -28,6 +28,10 @@ define(["md/TreeNode"],function(TreeNode){
 		
 		return c;
 	};
+
+	var getCanvas = function(pid){
+		return document.getElementById(pid).getElementsByTagName("canvas")[0];
+	}
 	var createRect = function(x,y,w,h){
 		ctx.strokeRect(x,y,w,h);
 	}
@@ -208,7 +212,7 @@ define(["md/TreeNode"],function(TreeNode){
 	var hideTree = function(root){
 		for(var i = 0;i<nodes.length;i++){
 			var n = nodes[i];
-			if(n.parent == root){
+			if(n && n.parent == root){
 				n.hide = true;
 				hideTree(n);
 			}
@@ -217,15 +221,14 @@ define(["md/TreeNode"],function(TreeNode){
 	var a = function(id){
 		this.id = id;
 		this.data;
-		this.init = function(){
-			var c = createCanvas(this.id);
-			ctx = c.getContext("2d");
+		this.regEvent = function(c){
+			//db click event
 			c.addEventListener("dblclick",function(e){
 				console.log("db click");
 				//collision check
 				for(var i=0;i<nodes.length;i++){
 					var n = nodes[i];
-					if(n.hide){
+					if(!n || n.hide){
 						continue;
 					}
 					if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
@@ -244,19 +247,21 @@ define(["md/TreeNode"],function(TreeNode){
 				}
 				
 			});
+			
+			//CTRL + left click event
 			c.addEventListener("click",function(e){
 				if(e.ctrlKey){
 					//only this node and its children
 					for(var i=0;i<nodes.length;i++){
 						var n = nodes[i];
-						if(n.hide){
+						if(!n || n.hide){
 							continue;
 						}
 						if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
-							if(n.currentIdx){
+							if(n && n.currentIdx){
 								for(var y=0;y<nodes.length;y++){
 									var n2 = nodes[y];
-									if(n2.currentIdx === n.currentIdx && n2 !== n && n2.parent == n.parent){
+									if(n2 && n2.currentIdx === n.currentIdx && n2 !== n && n2.parent == n.parent){
 										n2.hide = true;
 										hideTree(n2);
 									}
@@ -274,13 +279,21 @@ define(["md/TreeNode"],function(TreeNode){
 					}
 				}
 			});
+		};
+		this.init = function(){
+			var c = createCanvas(this.id);
+			ctx = c.getContext("2d");
+			
+			this.regEvent(c);
 		}
-		
+
 		this.repaint = function(){
 			var clonedData = JSON.parse(JSON.stringify(this.data));
 			ctx.save();
 			ctx.clearRect(0,0,cw,ch);
 			paint(ctx,clonedData);
+			var c = getCanvas(this.id);
+			this.regEvent(c);
 			ctx.restore();
 		};
 		this.filter = function(cost,times,condition){
