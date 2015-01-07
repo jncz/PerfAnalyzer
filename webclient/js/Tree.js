@@ -107,7 +107,14 @@ define(["md/TreeNode"],function(TreeNode){
 	var createRectangles = function(ns){
 		for(var i=0;i<ns.length;i++){
 			var n = ns[i];
+			if(n.hideChild){
+				ctx.save();
+				ctx.strokeStyle = "#0000FF";
+			}
 			createRect(n.x,n.y,rw,rh);
+			if(n.hideChild){
+				ctx.restore();
+			}
 		}
 	};
 	var createLine = function(n,p){
@@ -192,7 +199,10 @@ define(["md/TreeNode"],function(TreeNode){
 		}
 	};
 	var paintCallTime = function(){
+		ctx.save();
+		ctx.font="15px Times New Roman";
 		ctx.fillText(new Date(createTime),10,10);
+		ctx.restore();
 	};
 	var paint = function(ctx,data){
 		createTime = data[0].createdTime;
@@ -218,6 +228,16 @@ define(["md/TreeNode"],function(TreeNode){
 			}
 		}
 	};
+
+	var toggleTree = function(root,hide){
+		for(var i = 0;i<nodes.length;i++){
+			var n = nodes[i];
+			if(n && n.parent == root){
+				n.hide = hide;
+				toggleTree(n,hide);
+			}
+		}
+	};
 	
 	var processNodes = function(e,callback,callback2){
 		for(var i=0;i<nodes.length;i++){
@@ -226,8 +246,10 @@ define(["md/TreeNode"],function(TreeNode){
 				continue;
 			}
 			if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
-				callback(n);
-				
+				var result = callback(n);
+				if(result){
+					return;
+				}
 				ctx.save();
 				ctx.clearRect(0,0,cw,ch);
 				paintCallTime();
@@ -243,24 +265,38 @@ define(["md/TreeNode"],function(TreeNode){
 			}
 		}
 	};
+
+	var currentNode = null;//to record the current onmousemove selected node
+
+	var mousemoveRunning = false;//if the mousemove event is still running
+
+	var deleteHideNodes = function(){
+		for(var i=0;i<nodes.length;i++){
+			var n = nodes[i];
+			if(n && n.hide){
+				nodes[i] = null;
+			}
+		}
+	};
 	var a = function(id){
 		this.id = id;
 		this.data;
-		this.regEvent = function(c){
-			//db click event
-			c.addEventListener("dblclick",function(e){
+		this.dblclickEvent = function(e){
 				console.log("db click");
 				//collision check
-				processNodes(e,function(n){
+				if(!e.ctrlKey && !e.shiftKey){
+					processNodes(e,function(n){
 						n.hide = true;
 						hideTree(n);
-				});
-				
-			});
-			
-			//CTRL + left click event
-			c.addEventListener("click",function(e){
+						deleteHideNodes();
+					});
+				}
+			};
+
+		this.clickEvent = function(e){
+				console.log("click");
 				if(e.ctrlKey){
+					console.log("ctrl click");
 					//only this node and its children
 					processNodes(e,function(n){
 						if(n && n.currentIdx){
@@ -271,17 +307,40 @@ define(["md/TreeNode"],function(TreeNode){
 									hideTree(n2);
 								}
 							}
+							deleteHideNodes();
 						}
 					});
+				}else if(e.shiftKey){
+					console.log("shift key");
+					processNodes(e,function(n){
+						if(n.hideChild){
+							toggleTree(n,false);
+							n.hideChild = false;
+						}else{
+							n.hideChild = true;
+							toggleTree(n,true);
+						}
+						
+					});
 				}
-			});
+			};
 
-			//mousemove event
-			c.addEventListener("mousemove",function(e){
-				//TODO
+		
+		this.mousemoveEvent = function(e){
+				if(mousemoveRunning){
+					setTimeout(200,"console.log('sleep 200ms')");
+					return;
+				}
+				mousemoveRunning = true;
+				
 				var dialog = document.getElementById("nodeInfoDialog");
 				processNodes(e,function(n){
 					console.log(n.key);
+					if(!currentNode && currentNode == n && dialog.open){
+						mousemoveRunning = false;
+						return true;
+					}
+					currentNode = n;
 					var textContainers = dialog.getElementsByTagName("div");
 
 					textContainers[0].innerText = n.key;
@@ -291,12 +350,28 @@ define(["md/TreeNode"],function(TreeNode){
 					dialog.style.top=n.y+rh/1.2+"px";
                     dialog.style.left=n.x+rw/1.2+"px";
 					dialog.show();
+
+					mousemoveRunning = false;
+					return true;
 				},function(){
 					if(dialog.open){
 						dialog.close();
 					}
+					mousemoveRunning = false;
 				});
-			});
+			};
+		this.regEvent = function(c){
+			//db click event
+			c.removeEventListener("dblclick",this.dblclickEvent);
+			c.addEventListener("dblclick",this.dblclickEvent);
+			
+			//CTRL + left click event
+			c.removeEventListener("click",this.clickEvent);
+			c.addEventListener("click",this.clickEvent);
+
+			//mousemove event
+			c.removeEventListener("mousemove",this.mousemoveEvent);
+			c.addEventListener("mousemove",this.mousemoveEvent);
 		};
 		this.init = function(){
 			var c = createCanvas(this.id);
