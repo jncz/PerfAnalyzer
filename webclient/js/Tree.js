@@ -218,6 +218,31 @@ define(["md/TreeNode"],function(TreeNode){
 			}
 		}
 	};
+	
+	var processNodes = function(e,callback,callback2){
+		for(var i=0;i<nodes.length;i++){
+			var n = nodes[i];
+			if(!n || n.hide){
+				continue;
+			}
+			if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
+				callback(n);
+				
+				ctx.save();
+				ctx.clearRect(0,0,cw,ch);
+				paintCallTime();
+				for(var x=0;x<=indicator.i;x++){
+					paintNodes(x);
+				}
+				ctx.restore();
+				break;
+			}else{
+				if(callback2){
+					callback2();
+				}
+			}
+		}
+	};
 	var a = function(id){
 		this.id = id;
 		this.data;
@@ -226,25 +251,10 @@ define(["md/TreeNode"],function(TreeNode){
 			c.addEventListener("dblclick",function(e){
 				console.log("db click");
 				//collision check
-				for(var i=0;i<nodes.length;i++){
-					var n = nodes[i];
-					if(!n || n.hide){
-						continue;
-					}
-					if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
-						console.log(e.offsetX+" - "+e.offsetY+" - "+n.x+" - "+n.y+" - "+(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh));
+				processNodes(e,function(n){
 						n.hide = true;
 						hideTree(n);
-						ctx.save();
-						ctx.clearRect(0,0,cw,ch);
-						paintCallTime();
-						for(var x=0;x<=indicator.i;x++){
-							paintNodes(x);
-						}
-						ctx.restore();
-						break;
-					}
-				}
+				});
 				
 			});
 			
@@ -252,32 +262,40 @@ define(["md/TreeNode"],function(TreeNode){
 			c.addEventListener("click",function(e){
 				if(e.ctrlKey){
 					//only this node and its children
-					for(var i=0;i<nodes.length;i++){
-						var n = nodes[i];
-						if(!n || n.hide){
-							continue;
-						}
-						if(e.offsetX > n.x && e.offsetX < n.x+rw && e.offsetY > n.y && e.offsetY < n.y+rh){
-							if(n && n.currentIdx){
-								for(var y=0;y<nodes.length;y++){
-									var n2 = nodes[y];
-									if(n2 && n2.currentIdx === n.currentIdx && n2 !== n && n2.parent == n.parent){
-										n2.hide = true;
-										hideTree(n2);
-									}
+					processNodes(e,function(n){
+						if(n && n.currentIdx){
+							for(var y=0;y<nodes.length;y++){
+								var n2 = nodes[y];
+								if(n2 && n2.currentIdx === n.currentIdx && n2 !== n && n2.parent == n.parent){
+									n2.hide = true;
+									hideTree(n2);
 								}
 							}
-							ctx.save();
-							ctx.clearRect(0,0,cw,ch);
-							paintCallTime();
-							for(var x=0;x<=indicator.i;x++){
-								paintNodes(x);
-							}
-							ctx.restore();
-							break;
 						}
-					}
+					});
 				}
+			});
+
+			//mousemove event
+			c.addEventListener("mousemove",function(e){
+				//TODO
+				var dialog = document.getElementById("nodeInfoDialog");
+				processNodes(e,function(n){
+					console.log(n.key);
+					var textContainers = dialog.getElementsByTagName("div");
+
+					textContainers[0].innerText = n.key;
+					textContainers[1].innerText = n.callMeanCost+"/"+n.callTimes;
+					textContainers[2].innerText = n.callMeanCost*n.callTimes;
+			
+					dialog.style.top=n.y+rh/1.2+"px";
+                    dialog.style.left=n.x+rw/1.2+"px";
+					dialog.show();
+				},function(){
+					if(dialog.open){
+						dialog.close();
+					}
+				});
 			});
 		};
 		this.init = function(){

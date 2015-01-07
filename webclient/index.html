@@ -16,6 +16,10 @@
 			.emphasize{
 				color:red;
 			}
+			
+			#nodeInfoDialog{
+				position:absolute;
+			}
 		</style>
 	</head>
 	
@@ -79,6 +83,12 @@
 		<dialog id="delConfirmDialog" class="hide">
 			<h3>Confirm：Do you want to delete the record???</h3>
 			<button id="delRecordBtn">Delete</button>
+		</dialog>
+		<dialog id="nodeInfoDialog" class="hide">
+			<h3>Node Info</h3>
+			<div>class name</div>
+			<div>avg cost / call times</div>
+			<div>total cost</div>
 		</dialog>
 	</body>
 </html>
