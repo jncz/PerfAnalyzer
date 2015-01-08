@@ -234,6 +234,7 @@ define(["md/TreeNode"],function(TreeNode){
 			var n = nodes[i];
 			if(n && n.parent == root){
 				n.hide = hide;
+				n.collapse = hide;
 				toggleTree(n,hide);
 			}
 		}
@@ -273,7 +274,7 @@ define(["md/TreeNode"],function(TreeNode){
 	var deleteHideNodes = function(){
 		for(var i=0;i<nodes.length;i++){
 			var n = nodes[i];
-			if(n && n.hide){
+			if(n && n.hide && !n.collapse){
 				nodes[i] = null;
 			}
 		}
