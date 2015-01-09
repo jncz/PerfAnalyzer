@@ -11,53 +11,17 @@ import com.test.instrument.Config;
 
 
 public class Log {
-//	private static final BlockingQueue<String[]> idxOutQueue = new ArrayBlockingQueue<String[]>(10000,true);
-	
+
 	private final String DATA_END_MARKER = "DataEnd";
 	private RandomAccessFile rf;
 	private List<String> buffer;
 	private int buffersize = 50;
 	
-//	static{
-//		startIdxOutputThread();
-//	}
 	private Log(RandomAccessFile f){
 		this.rf = f;
 		this.buffer = new ArrayList<String>();
 	}
-	
-//	private static void startIdxOutputThread() {
-//		new Thread(new Runnable(){
-//
-//			@Override
-//			public void run() {
-//				try {
-//					while (true) {
-//						String[] names = idxOutQueue.take();
-//						consume(names);
-//					}
-//				} catch (InterruptedException ex) {}
-//			}
-//			
-//			void consume(String[] names) {
-//				String foldername = names[0];
-//				String datafilename = names[1];
-//				String idxFile = datafolder+foldername+"/idx";
-//				RandomAccessFile f = null;
-//				try {
-//					f = new RandomAccessFile(new File(idxFile),"rw");
-//					f.writeBytes(datafilename);
-//				} catch (FileNotFoundException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				} finally{
-//					Util.close(f);
-//				}
-//			}
-//			
-//		}).start();
-//	}
+
 	public static Log inst(String executorName){
 		synchronized(Log.class){
 			RandomAccessFile rf = output(executorName);
@@ -127,7 +91,6 @@ public class Log {
 			if(!datafile.exists()){
 				datafile.createNewFile();
 			}
-//			appendToIndex(f,datafile);
 			RandomAccessFile rfs = new RandomAccessFile(datafile,"rw");
 			return rfs;
 		} catch (FileNotFoundException e) {
@@ -137,16 +100,9 @@ public class Log {
 		}
 		return null;
 	}
-//	private static void appendToIndex(File folder, File datafile) {
-//		try {
-//			idxOutQueue.put(new String[]{folder.getName(),datafile.getName()});
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 	public static void warning(String string) {
-		
+		throw new UnsupportedOperationException();
 	}
 
 	public static void error(String msg) {

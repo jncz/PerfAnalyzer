@@ -11,7 +11,6 @@ import java.io.OutputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -329,42 +328,6 @@ public class FileOp {
 			}
 		}
 	}
-	
-//	public static String process(List parts){
-//		String result = null;
-//		int len = parts.size();
-//		switch(len){
-//			case 1:
-//				JSONObject arr = FileOp.listFileNames();
-//				result = arr.toString();
-//				break;
-//			case 2:
-//				String v = (String) parts.get(1);
-//				if("archive".equalsIgnoreCase(v)){
-//					FileOp.archive(false);
-//					JSONObject obj = new JSONObject();
-//					obj.put("ok", 200);
-//					result = obj.toString();
-//				}else{
-//					result = FileOp.getStatsData(v).toString();
-//				}
-//				break;
-//			case 3:
-//				String v1 = (String) parts.get(1);
-//				String v2 = (String) parts.get(2);
-//				if("archive".equalsIgnoreCase(v1) && "rebuild".equalsIgnoreCase(v2)){
-//					FileOp.archive(true);
-//					JSONObject obj = new JSONObject();
-//					obj.put("ok", 200);
-//					result = obj.toString();
-//				}else if("stats".equalsIgnoreCase(v1)){
-//					JSONArray stats = FileOp.getLongTermStats(v2);
-//					result = stats.toString();
-//				}
-//				break;
-//		}
-//		return result;
-//	}
 
 	@SuppressWarnings("unchecked")
 	public static JSONArray getLongTermStats(String foldername,long timestamp) {
@@ -429,7 +392,7 @@ public class FileOp {
 	 */
 	private static boolean validTS(long timestamp) {
 		try{
-			Time t = new Time(timestamp);
+			new Time(timestamp);
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -599,33 +562,6 @@ public class FileOp {
 				e.printStackTrace();
 			}
 			datafile.renameTo(targetFile);
-//			InputStream is = null;
-//			OutputStream os = null;
-//			try {
-//				os = new FileOutputStream(targetFile);
-//				is = new FileInputStream(datafile);
-//				byte[] bs = new byte[2048];
-//				int idx = -1;
-//				while((idx = is.read(bs)) != -1){
-//					os.write(bs, 0, idx);
-//				}
-//			} catch (FileNotFoundException e) {
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			} finally{
-//				Util.close(os);
-//				Util.close(is);
-//				try {
-//					Thread.sleep(100);
-//					boolean del = datafile.delete();
-//					if(!del){
-//						datafile.delete();
-//					}
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
 		}
 		
 	}
