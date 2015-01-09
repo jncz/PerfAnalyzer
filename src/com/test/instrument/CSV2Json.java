@@ -70,21 +70,21 @@ public class CSV2Json {
 			Util.close(br);
 		}
 	}
-	private static void toMD5(String[] datas) {
-		StringBuilder sb = new StringBuilder();
-		for(String d:datas){
-			sb.append(d);
-		}
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] bs = md.digest(sb.toString().getBytes());
-			byte[] bs2 = md.digest(sb.toString().getBytes());
-			boolean b = md.isEqual(bs, bs2);
-			System.out.println(b);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-	}
+//	private static void toMD5(String[] datas) {
+//		StringBuilder sb = new StringBuilder();
+//		for(String d:datas){
+//			sb.append(d);
+//		}
+//		try {
+//			MessageDigest md = MessageDigest.getInstance("MD5");
+//			byte[] bs = md.digest(sb.toString().getBytes());
+//			byte[] bs2 = md.digest(sb.toString().getBytes());
+//			boolean b = md.isEqual(bs, bs2);
+//			System.out.println(b);
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	private static boolean valid(String temp) {
 		if(temp != null && !temp.trim().equals("")){
