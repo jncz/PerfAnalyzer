@@ -9,6 +9,7 @@ define(function(){
 		this.parent = p;
 		this.callMeanCost;
 		this.callTimes;
+		this.keyNode;//indicate whether this node is a key node, that means the node take the most of the time of its sibling nodes
 		
 	};
 	

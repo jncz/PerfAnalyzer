@@ -16,7 +16,9 @@ define(["md/TreeNode"],function(TreeNode){
 	var fcondition;
 	
 	var createTime;
-	
+
+	var lastKeyNode;
+
 	var nodes = [];
 	var createCanvas = function(pid){
 		var c = document.createElement("canvas");
@@ -111,11 +113,29 @@ define(["md/TreeNode"],function(TreeNode){
 				ctx.save();
 				ctx.strokeStyle = "#0000FF";
 			}
+			if(n.keyNode){
+				ctx.save();
+				ctx.strokeStyle = "#FF0000";
+			}
 			createRect(n.x,n.y,rw,rh);
 			if(n.hideChild){
 				ctx.restore();
 			}
+			if(n.keyNode){
+				ctx.restore();
+			}
 		}
+	};
+
+	var applyLineStyle = function(n,p){
+		if(n.keyNode && p.keyNode){
+			ctx.save();
+			ctx.strokeStyle="#FF0000";
+		}
+	};
+
+	var releaseLineStyle = function(n,p){
+		ctx.restore();
 	};
 	var createLine = function(n,p){
 		if(p == null){
@@ -127,10 +147,14 @@ define(["md/TreeNode"],function(TreeNode){
 		var x = n.x+rw/2;
 		var y = n.y;
 		
+		applyLineStyle(n,p);
 		ctx.beginPath();
 		ctx.moveTo(px,py);
+		//ctx.lineTo(px,py+minYgap/3);
+		//ctx.lineTo(x,py+minYgap/2);
 		ctx.lineTo(x,y);
 		ctx.stroke();
+		releaseLineStyle(n,p);
 	}
 	var createLins = function(ns){
 		for(var i=0;i<ns.length;i++){
@@ -139,11 +163,49 @@ define(["md/TreeNode"],function(TreeNode){
 		}
 	};
 	var fillText = function(ns){
+		var offset = 2;
 		for(var i=0;i<ns.length;i++){
 			var n = ns[i];
-			ctx.fillText(n.key,n.x,n.y);
-			ctx.fillText(n.callMeanCost+"/"+n.callTimes,n.x,(n.y+10));
-			ctx.fillText(n.callMeanCost*n.callTimes,n.x,(n.y+20));
+			ctx.fillText(n.key,n.x+offset,n.y);
+			ctx.fillText(n.callMeanCost+"/"+n.callTimes,n.x+offset,(n.y+10));
+			ctx.fillText(n.callMeanCost*n.callTimes,n.x+offset,(n.y+20));
+		}
+	};
+
+	var getTotalCost = function(n){
+		var total = (n.callMeanCost*1)*(n.callTimes*1);
+		return total;
+	};
+
+	/**
+	* update the entire tree to find out the key path, the key path mean the path that take the most of the time cost;
+	**/
+	var updateKeyPath = function(ns){
+		if(ns.length == 1 && ns[0].currentIdx == 0){//root node
+			ns[0].keyNode = true;
+			lastKeyNode = ns[0];
+			return;
+		}
+		var parent = lastKeyNode;
+		var keyNodeIdx = -1;
+		var maxTotalCost = 0;
+		if(parent.keyNode){
+			for(var i=0;i<ns.length;i++){
+				var n = ns[i];
+				if(n.parent != lastKeyNode && lastKeyNode){
+					continue;
+				}
+				var maxOne = Math.max(maxTotalCost,getTotalCost(n));
+				if(maxOne > maxTotalCost){
+					maxTotalCost = maxOne;
+					keyNodeIdx = i;
+				}
+			}
+		}
+		
+		if(keyNodeIdx != -1){
+			ns[keyNodeIdx].keyNode = true;
+			lastKeyNode = ns[keyNodeIdx];
 		}
 	};
 	var paintNodes = function(idx){
@@ -154,6 +216,7 @@ define(["md/TreeNode"],function(TreeNode){
 				n.push(node);
 			}
 		}
+		updateKeyPath(n);
 		if(n.length > 0){
 			calculateSize(n);
 			//createRectangles(n);
